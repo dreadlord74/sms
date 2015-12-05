@@ -1,0 +1,208 @@
+ul.hr {
+    margin: 0; /* Обнуляем значение отступов */
+    padding: 4px; /* Значение полей */
+    top: 2px;
+   }
+ul.hr li {
+    display: inline; /* Отображать как строчный элемент */
+    margin-right: 5px; /* Отступ слева */
+    border: 1px solid #000; /* Рамка вокруг текста */
+    padding: 3px; /* Поля вокруг текста */
+}
+
+.not_work {
+    background-color: red;
+}
+
+.work {
+    background-color: green;
+}
+
+.main {
+    min-width: 1400px;
+    min-height: 800px;
+}
+
+.center {
+    border: 1px solid gray;
+	top: 50%; /* Отступ в процентах от верхнего края окна */
+	left: 50%; /* Отступ в процентах от левого края окна */
+	width: 360px; /* Ширина блока */
+	height: 260px; /* Высота блока */
+	position: absolute; /* Абсолютное позиционирование блока */
+	margin-top: -130px; /* Отрицательный отступ от верхнего края страницы, должен равняться половине высоты блока со знаком минус */
+	margin-left: -180px; /* Отрицательный отступ от левого края страницы, должен равняться половине высоты блока со знаком минус */
+}
+
+.add_new {
+    width: 176px; 
+    height: 226px; 
+    float: left;
+}
+
+.left_div {
+    float:  left;
+    width: 300px;
+    height: auto;
+    border: 1px solid gray;
+    visibility: hidden;
+}
+
+.right_div {
+    float:  right;
+    width: 300px;
+    height: 300px;
+    border: 1px solid gray;
+}
+
+.added {
+    margin-left: 20px;
+}
+
+.menu {
+    border: 1px solid grey;
+    float: top;
+    width: 200px;
+    height: auto;
+    position: fixed;
+}
+
+.auth {
+  border: 1px solid gray;
+  top: 50%;
+  left: 50%;
+  width: 360px;
+  height: 107px;
+  position: absolute;
+  margin-top: -53px;
+  margin-left: -180px;
+}
+
+.auth div {
+    width: 157px;
+    height: 80px;
+    float: left;
+    margin-left: 10px;
+}
+
+#tab{
+    position: absolute;
+  width: 800px;
+  margin-left: 40px;
+}
+
+.stat span{
+    border: 1px solid #000000;
+    position: relative;
+    float: left;
+    margin: 5px;
+}
+    #deliv{
+        background-color: #878BB6;
+    }
+
+    #otprav{
+        background-color: #4ACAB4;
+    }
+
+    #error{
+        background-color: #FF8153;
+    }
+
+    .stat_msg {
+        position:relative;
+        float: right;
+        margin-right: 20px;
+    }
+
+        .msg {
+            border-bottom: 1px solid black;
+            float: right;
+            width: 600px;
+            margin: 14px 10px 11px 22px;
+        }
+
+.checkbox {
+    position: relative;
+    font-size: 14px;
+    line-height: 19px;
+    margin: 6px 0 -6px 0;
+}
+
+.checkbox label {
+    padding-left: 25px;
+}
+
+.checkbox.loading label {
+    background: url("img/ajax_loading.gif") 0 4px no-repeat;
+}
+
+.checkbox.loading label:before {
+    display: none;
+}
+
+.sended_center {
+    border: 1px solid gray;
+    top: 50%; /* Отступ в процентах от верхнего края окна */
+    left: 50%; /* Отступ в процентах от левого края окна */
+    width: 360px; /* Ширина блока */
+    height: auto; /* Высота блока */
+    position: absolute; /* Абсолютное позиционирование блока */
+    margin-top: -130px; /* Отрицательный отступ от верхнего края страницы, должен равняться половине высоты блока со знаком минус */
+    margin-left: -180px; /* Отрицательный отступ от левого края страницы, должен равняться половине высоты блока со знаком минус */
+}
+
+    .sended_center input{
+        margin: 10px 10px 10px 10px;
+    }
+
+ul{
+    margin:0;padding:0;
+}
+#nav{
+    right:20px;
+    list-style:none;
+    position:fixed;
+    top:110px;
+}
+    #nav li{
+        margin-bottom:2px;
+    }
+    #nav a{
+        background:#ededed;
+        color:#666;
+        display:block;
+        font-size:11px;
+        padding:5px 10px;
+        text-decoration:none;
+        text-transform:uppercase;
+    }
+    #nav a:hover{
+        background:#dedede;
+        color: #000000;
+    }
+    #nav .current {
+        background:#666;
+        color:#ededed;
+    }
+
+.settings {
+    top: 50%; /* Отступ в процентах от верхнего края окна */
+    left: 50%; /* Отступ в процентах от левого края окна */
+    width: 360px; /* Ширина блока */
+    height: auto; /* Высота блока */
+    position: absolute; /* Абсолютное позиционирование блока */
+    margin-top: -130px; /* Отрицательный отступ от верхнего края страницы, должен равняться половине высоты блока со знаком минус */
+    margin-left: -180px; /* Отрицательный отступ от левого края страницы, должен равняться половине высоты блока со знаком минус */
+    border: 1px solid black;
+}
+
+    .settings label {
+        margin: 2px;
+        float: left;
+    }
+
+    .settings input {
+        margin: 2px;
+        float: right;
+    }
