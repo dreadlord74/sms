@@ -42,12 +42,17 @@ class update {
 
         if (count($res) > 0){
             $ids = array();
-
+/*
             foreach ($res as $item){
                 $ids[$item['device']][] = substr($item['id_sms'], -7);///ПО НЕВЕДОМОЙ ПРИЧИНЕ ПЕРЕД АЙДИ СМС СТОИТ ХРЕНОВА ТУЧА НУЛЕЙ
                 //ВРЕМЕННЫЙ КОСТЫЛЬ. НЕ ЗАБЫТЬ ПЕРЕДЕЛАТЬ!!1
             }
+*/
+            foreach ($res as $item){
+                $ids[$item['device']][] = $item['id_sms'];
+            }
 
+            print_arr($ids);
             $out = $this->us->get_sms_obj()->get_out_sms($ids)->get_result();
 
             unset($res, $ids);
@@ -83,21 +88,23 @@ class update {
     }
 
     /**
-     * Метод для установки подтверждения номеров участников рассылки
+     * Метод для установки подтверждения номеров получателей рассылки
      * @return $this
      */
     function update_ver(){
         $in = $this->us->get_sms_obj()->get_in_sms()->get_result();
-        
+        print_arr($in);
         $phones = array();
         foreach($this->us->get_dev_obj()->get_devices() as $device){
-            if ($in[$device]['code'] == 0)
+            if (($in[$device]['code'] == 0) and ($in[$device]['count'] != 0))
                 foreach ($in[$device]['data'] as $value){
                     $phone = str_replace("+7", "8", $value['phone']);
                     if ((int)$phone != 0){//является ли номер отправителя числовым
                         $phones[] = $phone;
                     }
                 }
+            else
+                return $this;
 
             $query = "UPDATE `users` SET phone_ver='1', date_ver='".date("Y-m-d")."' WHERE phone IN(".implode(',', $phones).") AND phone_ver='0'";
 
