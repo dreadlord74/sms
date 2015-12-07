@@ -27,7 +27,7 @@ define("USER", "dreadlord");
 define("PASS", "123gde456bzxd");
 
 //имя бд
-define("DB", "nod_test");
+define("DB", "nod");
 
 //Название - title
 define("TITLE","Смс-рассылка");
