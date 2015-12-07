@@ -42,17 +42,12 @@ class update {
 
         if (count($res) > 0){
             $ids = array();
-/*
+
             foreach ($res as $item){
                 $ids[$item['device']][] = substr($item['id_sms'], -7);///ПО НЕВЕДОМОЙ ПРИЧИНЕ ПЕРЕД АЙДИ СМС СТОИТ ХРЕНОВА ТУЧА НУЛЕЙ
                 //ВРЕМЕННЫЙ КОСТЫЛЬ. НЕ ЗАБЫТЬ ПЕРЕДЕЛАТЬ!!1
             }
-*/
-            foreach ($res as $item){
-                $ids[$item['device']][] = $item['id_sms'];
-            }
 
-            print_arr($ids);
             $out = $this->us->get_sms_obj()->get_out_sms($ids)->get_result();
 
             unset($res, $ids);
@@ -105,6 +100,7 @@ class update {
                 }
             else
                 return $this;
+            if (empty($phones)) return $this;
 
             $query = "UPDATE `users` SET phone_ver='1', date_ver='".date("Y-m-d")."' WHERE phone IN(".implode(',', $phones).") AND phone_ver='0'";
 

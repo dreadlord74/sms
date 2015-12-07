@@ -162,8 +162,8 @@ class sms extends device_sms implements _sms{
     
     	 $params = array('token'  => $this->get_token());
          
-                 $query = "INSERT INTO sended_mass (phones, date, tema, msg) 
-                                       VALUES ('".implode(',', $phones)."', '". date("Y-m-d") ."', '$tema', '$msg')";
+                 $query = "INSERT INTO sended_mass (phones, date, tema, msg, user_id) 
+                                       VALUES ('".implode(',', $phones)."', '". date("Y-m-d") ."', '$tema', '$msg', {$_SESSION['id']})";
                  
                  $db = new data_base();
                  

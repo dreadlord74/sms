@@ -18,7 +18,7 @@ define("CONTROLLER", "controller/controller.php");
 define("VIEW", "view/");
 
 //сервер
-define("HOST", "localhost");
+define("HOST", "127.0.0.1");
 
 //пользователь
 define("USER", "dreadlord");
@@ -27,7 +27,7 @@ define("USER", "dreadlord");
 define("PASS", "123gde456bzxd");
 
 //имя бд
-define("DB", "nod");
+define("DB", "nod_test");
 
 //Название - title
 define("TITLE","Смс-рассылка");

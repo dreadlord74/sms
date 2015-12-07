@@ -14,6 +14,7 @@ var attempts = 0;
             data: "text="+text+"&tema="+tema+"&id="+id,
             success: function(data){
                 alert(data);
+				$("#div_al").append(data);
                 if (data){
                     data = $.parseJSON(data);
                     var error = false, vivod = "Отправка прошла успешно на следующих устройствах: ";

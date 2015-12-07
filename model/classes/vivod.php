@@ -12,9 +12,10 @@ class vivod {
      * Метод для вывода результата
      * @param $method - строка "json" или "string"
      */
-    function echo_result($method){
-
-        switch ($method){
+    function echo_result($method)
+    {
+        switch ($method)
+        {
             case "json":
                 echo json_encode($this->result);
                 break;
@@ -22,5 +23,6 @@ class vivod {
                 echo $this->result;
                 break;
         }
+        exit();
     }
 } 

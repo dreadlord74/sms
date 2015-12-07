@@ -3,7 +3,7 @@
 define ("SCRIPT", TRUE);
 
 //домен
-define("PATH", "http://localhost/sms1/");
+define("PATH", "http://localhost/sms/");
 //сервер
 define("HOST", "localhost");
 
@@ -14,7 +14,7 @@ define("USER", "dreadlord");
 define("PASS", "123gde456bzxd");
 
 //имя бд
-define("DB", "nod");
+define("DB", "nod_test");
 
 require_once 'interfaces.php';
 

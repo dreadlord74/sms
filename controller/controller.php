@@ -162,7 +162,6 @@ switch ($view) {
                     $id = (int)$_POST['id'];
 
                     echo json_encode(get($id));
-
                 }
                 exit();
                 break;
@@ -214,7 +213,7 @@ switch ($view) {
         }
             
 		$us->add_new($_POST['name'], $_POST['fam'], $_POST['otch'], $_POST['phone'], $_POST['mail'], $_POST['date'], $gorod, $obl)->echo_result("string");
-        exit();
+
 		break;
     
     case 'send_mass':
@@ -233,17 +232,14 @@ switch ($view) {
                 }
 
                 $us->get_sms_obj()->send_mass($_POST['text'], $phones, $_POST['tema'], $_POST['id'])->echo_res("json");
-                exit();
 
                 break;
             case "get_pass":
                 $us->get_sms_obj()->generate_pass($_POST['tema'], $_POST['text'])->echo_result("string");
-                exit();
 
                 break;
             case "attempt":
                 $us->get_sms_obj()->check_pass($_POST['id'], $_POST['pass'])->echo_result("string");
-                exit();
 
                 break;
         }
@@ -326,9 +322,12 @@ switch ($view) {
     case 'settings':
         $title = TITLE." - Изменение данных";
 
-        switch($do){
+        switch($do)
+        {
             case "update":
+                $settings = new settings($us);
 
+                $settings->update($_POST['login'], $_POST['token'], $_POST['new_pass'], $_POST['def_dev'], $_POST['devices'])->echo_result("string");
 
                 break;
         }
