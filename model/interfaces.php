@@ -2,6 +2,7 @@
 
 interface _devices {
     function get_devices();
+    function device_status();
 }
 
 interface _sms {

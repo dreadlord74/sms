@@ -76,7 +76,7 @@ switch ($view) {
         }
     break;
 	case 'send_sms':
-		$sms->send_sms($_POST['msg'], $_POST['phone']);
+		//$sms->send_sms($_POST['msg'], $_POST['phone']);
 		break;
 	
 	case 'add':
@@ -215,7 +215,7 @@ switch ($view) {
                     $phones[] = $item['phone'];
                 }
 
-                $us->get_sms_obj()->send_mass($_POST['text'], $phones, $_POST['tema'], $_POST['id'], $us->gorod)->echo_res("json");
+                $us->send_mass($_POST['text'], $phones, $_POST['tema'], $_POST['id'], $us->gorod)->echo_res("json");
 
                 break;
             case "get_pass":
@@ -228,7 +228,7 @@ switch ($view) {
                 break;
         }
 
-        $res = $us->get_dev_obj()->device_status()->get_result();
+        $res = $us->device_status()->get_result();
         
         break;
         

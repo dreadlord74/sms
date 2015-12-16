@@ -43,8 +43,11 @@ class device_sms extends vivod{
      * Вернут результат выполнения метода у объекта - наследника
      * @return $this->result
      */
-    public function get_result(){
-        return $this->result;
+    public function get_result($what=''){
+        if ($what == 'code')
+            return $this->result['code'];
+        else
+            return $this->result;
     }
 
     /**

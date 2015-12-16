@@ -5,19 +5,20 @@ defined ("SCRIPT") or die ("Сюда нельзя!");
      * @date 18.08.15
      * @author Данил Хандысь
      */
-class user extends vivod implements _user {
+class user extends vivod implements _user
+{
     /**
      * объект Класса data_base
      */
-    protected $db = null;
+    protected $db;
     /**
      * объект Класса sms
      */
-    protected $sms = null;
+    protected $sms;
     /**
      * объект Класса devices
      */
-    protected $devices = false;
+    protected $devices;
     
     /**
      * id настроект пользователя
@@ -51,6 +52,11 @@ class user extends vivod implements _user {
      * id области пользователя
      */
     public $obl;
+
+    /**
+     * @var $phone - номер телефона пользователя
+     */
+    private $phone;
     
     /**
      * нужно ли подтверждение телефона учатника
@@ -210,15 +216,26 @@ class user extends vivod implements _user {
         }
         exit();
     }
-    
-    private function devices_ini(){
+
+    /**
+     * Метод для инициализации объет девайсов
+     * @return $this
+     */
+    private function devices_ini()
+    {
         $this->devices = new devices();
-        return $this;
+        return $this->devices;
     }
-    
-    private function sms_ini(&$phone){
-        $this->sms = new sms($this->devices, $phone);
-        return $this;
+
+    /**
+     * Метод для иницилизации объекта смс
+     * @return $this
+     */
+    private function sms_ini()
+    {
+        $this->devices_ini();
+        $this->sms = new sms($this->devices, $this->phone);
+        return $this->sms;
     }
     
     function __destruct(){
@@ -256,7 +273,7 @@ class user extends vivod implements _user {
                 
                 $_SESSION['default'] = $res['default_dev'];
 
-                $this->devices_ini()->sms_ini($res['phone']);
+                $this->phone = $res['phone'];
              }    
         }else{
             $pass = md5($pass);
@@ -274,6 +291,43 @@ class user extends vivod implements _user {
                 $this->db->write_log(1);
             }
         }
+    }
+
+    /**
+     * Метод для смс-рассылки
+     * @param $msg
+     * @param $phones
+     * @param $tema
+     * @param $id
+     * @param $gorod
+     * @return sms
+     */
+    public function send_mass (&$msg, &$phones, &$tema, &$id, &$gorod)
+    {
+        $sms = $this->sms_ini();
+        $sms->send_mass($msg, $phones, $tema, $id, $gorod);
+        return $sms;
+    }
+
+    /**
+     * @param $msg
+     * @param $phone
+     * @return sms
+     */
+    public function send_sms(&$msg, &$phone)
+    {
+        $sms = $this->sms_ini();
+
+        $sms->send_sms($msg, $phone);
+        return $sms;
+    }
+
+    public function device_status ()
+    {
+        $devices = $this->devices_ini();
+
+        $devices->device_status();
+        return $devices;
     }
 
     /**
@@ -371,7 +425,8 @@ class user extends vivod implements _user {
             $_SESSION['count']++;
             $_SESSION['added'] .= "<p>".$ret."</p>";
             
-                if (!$conf_reg){
+                if (!$conf_reg)
+                {
                     $month = array (
                         '01' => "января",
                         '02' => "февраля",
@@ -399,7 +454,7 @@ class user extends vivod implements _user {
                     
                     $msg = str_replace("[дата]", $date, $msg);
 
-                    $xd = $this->sms->send_sms($msg, $phone);
+                    $xd = $this->send_sms($msg, $phone)->get_result('code');
                     
                     if ($xd == 0){
                         $query = "UPDATE users SET date_send_ver='".date("Y-m-d")."' WHERE phone='$phone'";
