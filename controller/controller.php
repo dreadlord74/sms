@@ -219,11 +219,11 @@ switch ($view) {
 
                 break;
             case "get_pass":
-                $us->get_sms_obj()->generate_pass($_POST['tema'], $_POST['text'])->echo_result("string");
+                $us->generate_pass($_POST['tema'], $_POST['text'])->echo_result("string");
 
                 break;
             case "attempt":
-                $us->get_sms_obj()->check_pass($_POST['id'], $_POST['pass'])->echo_result("string");
+                $us->check_pass($_POST['id'], $_POST['pass'])->echo_result("string");
 
                 break;
         }
@@ -243,7 +243,7 @@ switch ($view) {
             break;
             
             case "get_status":
-                $devices = $us->get_dev_obj()->device_status()->get_result();
+                $devices = $us->device_status()->get_result();
             
                 echo json_encode($devices['data']);
             break;
@@ -257,7 +257,7 @@ switch ($view) {
 
                 $update->update_status();
 
-                $us->get_sms_obj()->cancel_sms()->echo_res("json");
+                $us->cancel_sms()->echo_res("json");
 
             break;
         }

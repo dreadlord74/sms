@@ -38,12 +38,20 @@ class sms extends device_sms implements _sms{
         unset($this->device_class);
     }
 
-    public function check_pass($id, $pass){
+    /**
+     * Метод для проверки введенного пароля, для подтверждения рассылки
+     * @param $id
+     * @param $pass
+     * @return sms
+     */
+    public function check_pass($id, $pass)
+    {
         $query = "SELECT pass FROM want_to_send WHERE id=$id";
 
         $res = $this->db->super_query($query, false)->get_res() or false;
 
-        if ($res['pass'] == $pass){
+        if ($res['pass'] == $pass)
+        {
             $this->set_result($id);
             $query = "UPDATE want_to_send SET can='1' WHERE id=$id";
             $this->db->query($query);
@@ -53,7 +61,14 @@ class sms extends device_sms implements _sms{
         return $this;
     }
 
-    public function generate_pass($tema, $msg){
+    /**
+     * Метод для генерации пароля для подтверждения расслки
+     * @param $tema
+     * @param $msg
+     * @return sms
+     */
+    public function generate_pass($tema, $msg)
+    {
         $this->db->write_log(6, $tema."; ".$msg);
 
         $this->set_result(true);
@@ -71,7 +86,8 @@ class sms extends device_sms implements _sms{
 
         $this->db->query($query) or $this->set_result(false);
 
-        if ($this->get_result()){
+        if ($this->get_result())
+        {
             $msg = "Пароль для рассылки: $rand. Тема рассылки: ".$tema.". Сообщение: ".$msg;
             $result = $this->send_sms($msg, $this->phone)->get_result();
             if ($result['code'] == 0)

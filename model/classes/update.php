@@ -36,7 +36,7 @@ class update {
      * @return $this
      */
     function update_status(){
-        $query = "SELECT id_sms, device FROM `sended_sms` WHERE delivered='0' AND is_error='0' AND device IN (".implode(',', $this->us->get_dev_obj()->get_devices()).")";
+        $query = "SELECT id_sms, device FROM `sended_sms` WHERE delivered='0' AND is_error='0' AND device IN (".implode(',', $this->us->get_devices()).")";
 
         $res = $this->db->super_query($query)->get_res();
 
@@ -48,14 +48,14 @@ class update {
                 //ВРЕМЕННЫЙ КОСТЫЛЬ. НЕ ЗАБЫТЬ ПЕРЕДЕЛАТЬ!!1
             }
 
-            $out = $this->us->get_sms_obj()->get_out_sms($ids)->get_result();
+            $out = $this->us->get_out_sms($ids)->get_result();
 
             unset($res, $ids);
 
             $id_deliv = array();
             $id_error = array();
 
-            foreach($this->us->get_dev_obj()->get_devices() as $device){
+            foreach($this->us->get_devices() as $device){
 
                 foreach($out[$device]['data'] as $value){
 
@@ -87,10 +87,10 @@ class update {
      * @return $this
      */
     function update_ver(){
-        $in = $this->us->get_sms_obj()->get_in_sms()->get_result();
+        $in = $this->us->get_in_sms()->get_result();
         print_arr($in);
         $phones = array();
-        foreach($this->us->get_dev_obj()->get_devices() as $device){
+        foreach($this->us->get_devices() as $device){
             if (($in[$device]['code'] == 0) and ($in[$device]['count'] != 0))
                 foreach ($in[$device]['data'] as $value){
                     $phone = str_replace("+7", "8", $value['phone']);

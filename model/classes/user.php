@@ -5,7 +5,7 @@ defined ("SCRIPT") or die ("Сюда нельзя!");
      * @date 18.08.15
      * @author Данил Хандысь
      */
-class user extends vivod implements _user
+class user extends vivod implements _user, _devices, _sms
 {
     /**
      * объект Класса data_base
@@ -107,14 +107,6 @@ class user extends vivod implements _user
         $this->prava = $prava;
         $_SESSION['access'] = $prava;
         return $this;
-    }
-    
-    public function get_dev_obj(){
-        return $this->devices;
-    }
-    
-    public function get_sms_obj(){
-        return $this->sms;
     }
     
     private function set_gorod($gorod){
@@ -294,6 +286,34 @@ class user extends vivod implements _user
     }
 
     /**
+     * Метод для получения исходящих смс
+     * @param $ids
+     * @return sms
+     */
+    public function get_out_sms(&$ids)
+    {
+        return $this->sms_ini()->get_out_sms($ids);
+    }
+
+    /**
+     * Метод для получения входящих смс
+     * @return sms
+     */
+    public function get_in_sms()
+    {
+        return $this->sms_ini()->get_in_sms();
+    }
+
+    /**
+     * Метод для получения списка девайсов
+     * @return devices
+     */
+    public function get_devices()
+    {
+        return $this->devices_ini()->get_devices();
+    }
+
+    /**
      * Метод для смс-рассылки
      * @param $msg
      * @param $phones
@@ -304,9 +324,7 @@ class user extends vivod implements _user
      */
     public function send_mass (&$msg, &$phones, &$tema, &$id, &$gorod)
     {
-        $sms = $this->sms_ini();
-        $sms->send_mass($msg, $phones, $tema, $id, $gorod);
-        return $sms;
+        return $this->sms_ini()->send_mass($msg, $phones, $tema, $id, $gorod);
     }
 
     /**
@@ -316,20 +334,48 @@ class user extends vivod implements _user
      */
     public function send_sms(&$msg, &$phone)
     {
-        $sms = $this->sms_ini();
-
-        $sms->send_sms($msg, $phone);
-        return $sms;
+        return $this->sms_ini()->send_sms($msg, $phone);
     }
 
+    /**
+     * Метод для проверки статуса девайсов
+     * @return devices
+     */
     public function device_status ()
     {
-        $devices = $this->devices_ini();
-
-        $devices->device_status();
-        return $devices;
+        return $this->devices_ini()->device_status();
     }
 
+    /**
+     * Метод для отмены отправки смс
+     * @return sms
+     */
+    public function cancel_sms()
+    {
+        return $this->sms_ini()->cancel_sms();
+    }
+
+    /**
+     * Метод для проверки введенного пароля, для подтверждения рассылки
+     * @param $id
+     * @param $pass
+     * @return sms
+     */
+    public function check_pass($id, $pass)
+    {
+        return $this->sms_ini()->check_pass($id, $pass);
+    }
+
+    /**
+     * Метод для генерации пароля для подтверждения расслки
+     * @param $tema
+     * @param $msg
+     * @return sms
+     */
+    public function generate_pass($tema, $msg)
+    {
+        return $this->sms_ini()->generate_pass($tema, $msg);
+    }
     /**
      * Функция для выхода пользователя
      */
@@ -341,6 +387,19 @@ class user extends vivod implements _user
         redirect();
     }
 
+
+    /**
+     * Метод для добавление контактов в список рассылки
+     * @param $name
+     * @param $fam
+     * @param $otch
+     * @param $phone
+     * @param $mail
+     * @param $date
+     * @param string $gorod
+     * @param string $obl
+     * @return $this
+     */
 	public function add_new(&$name, &$fam, &$otch, &$phone, &$mail, &$date, &$gorod = "", &$obl = "")
     {
         $ret = $fam." ".$name." ".$otch;

@@ -11,6 +11,8 @@ interface _sms {
     function get_in_sms();
     function get_out_sms(&$ids);
     function cancel_sms();
+    function generate_pass($tema, $msg);
+    function check_pass($id, $pass);
 }
 
 interface _user {
