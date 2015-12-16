@@ -16,11 +16,3 @@ require_once "interfaces.php";
 function __autoload($class){
     require_once CLASSES.$class.".php";
 }
-/*
-require_once CLASSES."mysql.php";
-require_once CLASSES."devices.php";
-require_once CLASSES."sms.php";
-require_once CLASSES."user.php";
-require_once CLASSES."user_obl.php";
-require_once CLASSES."user_central.php";
-*/

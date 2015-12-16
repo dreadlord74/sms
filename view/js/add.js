@@ -139,9 +139,6 @@ $(document).ready(function(){
                                             }else{
                                                 alert("Не работает");
                                             }
-                                       },
-                                       error: function(){
-                                            alert("Не вышло");
                                        }
                                     }); 
                                 }

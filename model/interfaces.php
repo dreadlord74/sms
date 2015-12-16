@@ -6,7 +6,7 @@ interface _devices {
 
 interface _sms {
     function send_sms(&$msg, &$phone);
-    function send_mass(&$msg, &$phones, &$tema, &$id);
+    function send_mass(&$msg, &$phones, &$tema, &$id, &$gorod);
     function get_in_sms();
     function get_out_sms(&$ids);
     function cancel_sms();

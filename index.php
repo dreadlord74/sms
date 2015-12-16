@@ -1,5 +1,4 @@
 <?php
-
 //запрет прямого доступа
 define("SCRIPT", true);
 

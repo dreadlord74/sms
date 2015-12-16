@@ -5,6 +5,7 @@ defined ("SCRIPT") or die ("Сюда нельзя!");
  * Контроллер системы
  */
 
+//подключение модели
 require_once MODEL;
 
 $db = new data_base();
@@ -28,7 +29,6 @@ if ((isset($_SESSION['login'])) and (isset($_SESSION['id']))){
     }
     
     if ($us){
-
         $view = empty($_GET['view']) ? "add" : clear((string)$_GET['view']);
         $do = empty($_GET['do']) ? "nothing" : clear((string)$_GET['do']);
         $get = empty($_GET['get']) ? "nothing" : clear((string)$_GET['get']);
@@ -65,10 +65,9 @@ switch ($view) {
         
     case 'auth':
         $title = TITLE." - Авторизация";
-        
+
         if ($_GET['do'] == 'auth'){
             $us = new user($_POST['login'], $_POST['pass']);
-            
             if ($us){
                 redirect();
             }else{
@@ -132,26 +131,11 @@ switch ($view) {
         $title = TITLE." - Статус рассылок";
 
         function get ($id){
-            $query = "SELECT
-                            users.id,
-                            users.fam,
-                            users.name,
-                            users.otch,
-                            users.phone,
-                            sended_sms.delivered,
-                            sended_sms.`date`,
-                            sended_sms.is_error,
-                            sended_sms.id_rassilki,
-                            sended_sms.msg,
-                            sended_mass.tema
-                            FROM
-                            users
-                            Inner Join sended_sms ON users.phone = sended_sms.phone
-                            INNER JOIN sended_mass ON sended_mass.id = sended_sms.id_rassilki
-                            WHERE
-                            sended_sms.id_rassilki = $id AND sended_sms.user_id = {$_SESSION['id']} ORDER BY users.fam";
-            
-            $db = new data_base;
+            $query = "SELECT users.id, users.fam, users.name, users.otch, users.phone, users.gorod,
+                              sended_sms.delivered, sended_sms.`date`, sended_sms.is_error, sended_sms.id_rassilki, sended_sms.msg, sended_mass.tema
+                            FROM users Inner Join sended_sms ON users.phone = sended_sms.phone INNER JOIN sended_mass ON sended_mass.id = sended_sms.id_rassilki
+                                WHERE sended_sms.id_rassilki = $id ORDER BY users.fam";
+            $db = new data_base();
 
             return $db->super_query($query)->get_res();
         }
@@ -221,7 +205,7 @@ switch ($view) {
 
         switch($do){
             case "send":
-                $query = "SELECT phone FROM `users` WHERE phone_ver='1'";
+                $query = "SELECT phone FROM `users` WHERE phone_ver='1' AND gorod='{$us->gorod}'";
 
                 $res = $db->super_query($query)->get_res();
 
@@ -231,7 +215,7 @@ switch ($view) {
                     $phones[] = $item['phone'];
                 }
 
-                $us->get_sms_obj()->send_mass($_POST['text'], $phones, $_POST['tema'], $_POST['id'])->echo_res("json");
+                $us->get_sms_obj()->send_mass($_POST['text'], $phones, $_POST['tema'], $_POST['id'], $us->gorod)->echo_res("json");
 
                 break;
             case "get_pass":
@@ -269,32 +253,6 @@ switch ($view) {
             break;
             
             case "cancel":
-                /*
-                   file_get_contents("http://localhost/sms1/model/classes/auto.php", false);
-
-                   $query = "SELECT id_sms, device FROM sended_sms WHERE delivered='0' AND is_error='0'";
-
-                   $res = $db->super_query($query)->get_res();
-
-                   $ids = array();
-
-                   foreach ($res as $item){
-                       $ids[$item['device']][] = $item['id_sms'];
-                   }
-
-                   $out_sms = $us->get_sms_obj()->get_out_sms($ids)->get_result();
-
-                   foreach($out_sms as $device){
-                       foreach($device['data'] as $item){
-                           if($item['is_sended_to_phone'] != 1){
-                               $query = "DELETE FROM sended_sms WHERE phone='{$item['phone']}'";
-
-                               $db->query($query);
-                           }
-                       }
-                   }
-               */
-
                 $update = new update($us);
 
                 $update->update_status();
@@ -327,16 +285,12 @@ switch ($view) {
             case "update":
                 $settings = new settings($us);
 
-                $settings->update($_POST['login'], $_POST['token'], $_POST['new_pass'], $_POST['def_dev'], $_POST['devices'])->echo_result("string");
+                $settings->update($_POST['login'], $_POST['token'], $_POST['new_pass'], $_POST['default_dev'], $_POST['devices'])->echo_result("string");
 
                 break;
         }
 
         break;
-		
-	default:
-		
-		break;
 }
 unset($db, $query, $do, $get);
 

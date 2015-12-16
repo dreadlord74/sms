@@ -45,12 +45,12 @@ class user extends vivod implements _user {
     /**
      * id города пользователя
      */
-    protected $gorod;
+    public $gorod;
     
     /**
      * id области пользователя
      */
-    protected $obl;
+    public $obl;
     
     /**
      * нужно ли подтверждение телефона учатника
@@ -91,10 +91,11 @@ class user extends vivod implements _user {
         $this->id = (int)$id;
         return $this;
     }
-    
+
     /**
      * Метод для установки прав пользователя
-     * @param 
+     * @param
+     * @return $this
      */
     private function set_prava($prava){
         $this->prava = $prava;
@@ -286,10 +287,17 @@ class user extends vivod implements _user {
         redirect();
     }
 
-	public function add_new(&$name, &$fam, &$otch, &$phone, &$mail, &$date, &$gorod = "", &$obl = ""){
-	   
-		$ret = $fam." ".$name." ".$otch;
-        
+	public function add_new(&$name, &$fam, &$otch, &$phone, &$mail, &$date, &$gorod = "", &$obl = "")
+    {
+        $ret = $fam." ".$name." ".$otch;
+
+        //Если контакт с таким номером уже есть, то он не будет добавлен
+        if ($this->db->count_rows("SELECT id FROM users WHERE phone='$phone'")->get_res())
+        {
+            $this->result = $ret;
+            return $this;
+        }
+
         $conf_reg = ((int)$this->get_conf_reg() == 0) ? 1 : 0;
 
         $query = "INSERT INTO users (fam, name, otch, phone, mail, date, phone_ver, obl, gorod)
@@ -298,25 +306,62 @@ class user extends vivod implements _user {
         switch ($this->get_prava()){
             case 4:
                 //добавление в рамках города
-                $query .= "$this->obl, $this->gorod)";
+                $query .= "{$this->obl}, {$this->gorod})";
             break;
             
             case 3:
                 //В рамках области
-                $query .= empty($gorod) ? "$this->obl, $this->gorod)" : "$this->obl, $gorod)";
-                
+                if ($gorod == "")
+                    $query .= $this->obl.", ".$this->gorod.")";
+                else
+                {
+                    //Следующий код добавит город в текущую область, если его нет в базе
+                    if (!$this->db->count_rows("SELECT id FROM goroda WHERE obl='{$this->obl}' AND gorod='$gorod'")->get_res())
+                    {
+                        $this->db->query("INSERT INTO goroda (gorod, obl) VALUES ('$gorod', '{$this->obl}')");
+                        $gorod_id = $this->db->get_last_id();
+                    }
+                    else
+                        $gorod_id = $this->db->super_query("SELECT id FROM goroda WHERE gorod='$gorod'")->get_res();
+
+                    $query .= $this->obl.", ".$gorod_id.")";
+                }
             break;
             
             case 2:
                 //добавление по всей стране
-                $query .= empty($obl) ? "$this->obl, " : "$obl, ";
-                
-                $query .= empty($gorod) ? "$this->gorod)": "$gorod)";
+
+                if ($obl == "")
+                    $query .= $this->obl.", ";
+                else
+                {   //Добавит область, если её нет
+                    if (!$this->db->count_rows("SELECT id FROM obl WHERE obl='$obl'")->get_res())
+                    {
+                        $this->db->query("INSERT INTO obl (obl) VALUES ('$obl')");
+                        $obl_id = $this->db->get_last_id();
+                    }
+                    else
+                        $obl_id = $this->db->super_query("SELECT id FROM obl WHERE obl='$obl'")->get_res();
+
+                    $query .= $obl_id.", ";
+                }
+
+                if ($gorod == "")
+                    $query .= $this->gorod.")";
+                else
+                {
+                    //Следующий код добавит город в текущую область, если его нет в базе
+                    if (!$this->db->count_rows("SELECT id FROM goroda WHERE obl='{$this->obl}' AND gorod='$gorod'")->get_res())
+                    {
+                        $this->db->query("INSERT INTO goroda (gorod, obl) VALUES ('$gorod', '{$this->obl}')");
+                        $gorod_id = $this->db->get_last_id();
+                    }
+                    else
+                        $gorod_id = $this->db->super_query("SELECT id FROM goroda WHERE gorod='$gorod'")->get_res();
+
+                    $query .= $gorod_id.")";
+                }
             break;
-        }
-
-        if ($this->db->count_rows("SELECT id FROM goroda WHERE obl={$this->obl} AND gorod='$gorod'")){
-
         }
 
         $this->db->query($query) or $ret = false;

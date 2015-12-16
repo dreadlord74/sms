@@ -3,19 +3,23 @@
 defined ("SCRIPT") or die ("Сюда нельзя!");
 /**
  * Класс для работы с базой данных
- * @author Хандысь Данил
+ * @author Данил
  * @date 07.07.15
  */
-class data_base extends vivod{
+class data_base extends vivod
+{
     
-    private $q_id = false;
+    private $q_id = null;
     
     private $db = false;
-    
-/**
- * Конструктор класса
- * Устанавливает соединение с базой данных
- */
+
+    /**
+     * Конструктор класса
+     * Устанавливает соединение с базой данных
+     * @param string $host
+     * @param string $user
+     * @param string $pass
+     */
     function __construct($host=HOST, $user=USER, $pass=PASS) {
         $this->db = mysqli_connect($host, $user, $pass);
         
@@ -69,8 +73,7 @@ class data_base extends vivod{
     }
 
     public function count_rows($query){
-        $this->super_query($query);
-        $this->set_res(mysqli_num_rows($this->get_res()));
+        $this->query($query)->set_res(mysqli_num_rows($this->q_id));
         return $this;
     }
 
@@ -89,18 +92,19 @@ class data_base extends vivod{
   * @param string $query - запрос
   * @return $this
   */
-	public function query($query){
+	public function query($query)
+    {
 		$this->set_id(mysqli_query($this->db, $query));
-        if ($this->get_id()){
+        if ($this->get_id())
             $this->set_res($this->get_id());
-	       return $this;
-        }else{
+        else
             $this->display_error(mysqli_error($this->db), mysqli_errno($this->db), $query);
-        }	
+
+        return $this;
 	}
     /**
     * Запрос в БД, который задает результат
-    * @param string - $query - запрос
+    * @param string $query - запрос
     * @param bool $multi - устанавливает нужно ли вернуть всего одну строку из БД (false - да, True - нет)
     * @return $this
     */
@@ -109,7 +113,7 @@ class data_base extends vivod{
             $this->query($query);
             if ($this->get_id()){
                 $this->result = array();
-                while ($row = mysqli_fetch_assoc($this->get_id())){
+                while ($row = mysqli_fetch_assoc($this->q_id)){
                     $this->result[] = $row;
                 }
             }else{
@@ -121,7 +125,12 @@ class data_base extends vivod{
         }
         return $this;
     }
-    
+
+    /**
+     * @param $error
+     * @param $error_num
+     * @param string $query
+     */
     private function display_error($error, $error_num, $query = '')
 	{
 		if($query) {

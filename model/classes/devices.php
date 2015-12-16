@@ -52,10 +52,10 @@ class devices extends device_sms implements _devices{
     public function get_default(){
         return $this->default_dev;
     }
-    
+
     /**
      * Метод для получения списка устройств и их свойств
-     * @return - $this
+     * @return $this - $this
      */
     public function device_status (){
 

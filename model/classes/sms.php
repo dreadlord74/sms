@@ -132,18 +132,19 @@ class sms extends device_sms implements _sms{
              
         $this->set_result($result);
         return $this;
-    } 
-    
+    }
+
     /**
-    * Метод для массовой рассылки сообщений
-    * @date 18.08.15
-    * @param $msg - сообщение
-    * @param $phones - массив телефонов
-    * @param $tema - тема сообщения
-    * @return $result['code'] - вернет 0 при успехе, -1 при ошибке
-    */
+     * Метод для массовой рассылки сообщений
+     * @date 18.08.15
+     * @param $msg - сообщение
+     * @param $phones - массив телефонов
+     * @param $tema - тема сообщения
+     * @param $id
+     * @return $this $result['code'] - вернет 0 при успехе, -1 при ошибке
+     */
     
-    public function send_mass(&$msg, &$phones, &$tema, &$id){
+    public function send_mass(&$msg, &$phones, &$tema, &$id, &$gorod){
 
         $query = "SELECT can FROM want_to_send WHERE id=$id";
 
@@ -162,8 +163,8 @@ class sms extends device_sms implements _sms{
     
     	 $params = array('token'  => $this->get_token());
          
-                 $query = "INSERT INTO sended_mass (phones, date, tema, msg, user_id) 
-                                       VALUES ('".implode(',', $phones)."', '". date("Y-m-d") ."', '$tema', '$msg', {$_SESSION['id']})";
+                 $query = "INSERT INTO sended_mass (phones, date, tema, msg, gorod, user_id)
+                                       VALUES ('".implode(',', $phones)."', '". date("Y-m-d") ."', '$tema', '$msg', $gorod, {$_SESSION['id']})";
                  
                  $db = new data_base();
                  
@@ -259,8 +260,9 @@ class sms extends device_sms implements _sms{
      * @param $ids - массив с id смс и кодами устройств
      * @return $this
      */
-    public function get_out_sms(&$ids){
-
+    public function get_out_sms(&$ids)
+    {
+        $result = array();
         foreach ($ids as $device => $id){
             //массив, который будет передан с запросом
             $params = array (
@@ -279,14 +281,15 @@ class sms extends device_sms implements _sms{
     	$this->set_result($result);
 
         return $this;
-    
     }
     
     /**
      * Метод для отмены отправки неотправленных на устройства смс
      * @return $this
      */
-    public function cancel_sms(){
+    public function cancel_sms()
+    {
+        $res = array();
         foreach ($this->device_class->get_devices() as $device){
             $result = file_get_contents("https://semysms.net/api/3/cancel_sms.php?token=".$this->get_token()."&device=".$device, FALSE);
             $result = json_decode($result, TRUE);
@@ -298,13 +301,13 @@ class sms extends device_sms implements _sms{
         
         return $this;
     }
-    
+
     /**
      * Метод для получения входящих/исходящих смс
      * используется в соответствующих методах
      * @param $param - массив с переменными для передачи
      * @param $url - url для запроса
-     * @return $result - массив с данными, вернувшийся с semysms
+     * @return mixed $result - массив с данными, вернувшийся с semysms
      */
     private function get_sms(&$param, &$url){
     	// преобразуем массив в URL-кодированную строку

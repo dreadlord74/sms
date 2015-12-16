@@ -14,6 +14,8 @@ class settings extends vivod
      */
     private $us;
 
+    private $db;
+
     /**
      * Конструктор класса
      * задает объект пользователя
@@ -22,6 +24,7 @@ class settings extends vivod
     function __construct(User $us)
     {
         $this->us = $us;
+        $this->db = new data_base();
     }
 
     /**
@@ -38,7 +41,7 @@ class settings extends vivod
     {
         $query = "UPDATE admin SET login='$login', token='$token', default_dev='$def_dev', devices='$devices' WHERE id=".$this->us->id;
 
-        $this->result = data_base::query($query)->get_res() or die("Не вышло изменить настройки!");
+        $this->result = $this->db->query($query)->get_res() or die("Не вышло изменить настройки!");
 
         return $this;
     }
