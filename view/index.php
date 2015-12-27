@@ -16,7 +16,7 @@
 <?php
 
     if (isset($_SESSION['id'])){
-        include "/inc/menu.php";
+        include VIEW."/inc/menu.php";
     }
 	include $view.".php";
 ?>
