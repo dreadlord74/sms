@@ -267,7 +267,7 @@ switch ($view) {
     case 'view_ver':
         $title = TITLE." - Все подтвержденные";
     
-        $query = "SELECT * FROM users WHERE phone_ver='1' OR email_ver='1'";
+        $query = "SELECT * FROM users WHERE phone_ver='1' OR email_ver='1' AND gorod={$us->gorod}";
         
         $res = $db->super_query($query)->get_res();
         
