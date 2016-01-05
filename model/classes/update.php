@@ -26,10 +26,6 @@ class update {
         $this->db = new data_base();
     }
 
-    function __destruct(){
-        unset($this->us, $this->db);
-    }
-
     /**
      * Метод для обновления статусов смс
      * устанавливает доставку или ошибку доставки смс

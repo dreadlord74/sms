@@ -38,8 +38,6 @@ class data_base extends vivod
      */
     function __destruct(){
         mysqli_close($this->db);
-        foreach ($this as $item)
-            unset($item);
     }
     /**
     * Установить результат

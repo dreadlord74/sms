@@ -32,11 +32,6 @@ class devices extends device_sms implements _devices{
         $this->set_token()->default_dev = $_SESSION['default'];
 	}
     
-    function __destruct(){
-        foreach ($this as $item)
-            unset($item);
-    }
-    
     /**
     * получить коды устройств
     * @return $devices[]

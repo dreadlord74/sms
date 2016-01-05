@@ -32,11 +32,6 @@ class sms extends device_sms implements _sms{
         $this->phone = $phone;
         $this->db = new data_base();
     }
-    function __destruct(){
-        foreach ($this as $item)
-            unset($item);
-        unset($this->device_class);
-    }
 
     /**
      * Метод для проверки введенного пароля, для подтверждения рассылки

@@ -230,13 +230,7 @@ class user extends vivod implements _user, _devices, _sms
         return $this->sms;
     }
     
-    function __destruct(){
-        foreach ($this as $item)
-            unset($item);
-        unset($this->sms, $this->devices);
-    }
-    
-    public function __construct ($login, $pass = "", $id = false){
+    function __construct ($login, $pass = "", $id = false){
         $this->db = new data_base;
         
         if ($id){
