@@ -57,7 +57,7 @@ class sms extends device_sms implements _sms{
     }
 
     /**
-     * Метод для генерации пароля для подтверждения расслки
+     * Метод для генерации пароля для подтверждения рассылки
      * @param $tema
      * @param $msg
      * @return sms
@@ -105,8 +105,8 @@ class sms extends device_sms implements _sms{
         
         $today = date("Y-m-d");
         
-        $query = "INSERT INTO sended_sms (id_sms, msg, phone, date, device, user_id, id_rassilki)
-                                VALUES ('$id', '$msg', '$phone', '".$today."', '$device', '{$_SESSION['id']}', '$id_rassilki')";
+        $query = "INSERT INTO sended_sms (id_sms, msg, phone, date, device, id_rassilki)
+                                VALUES ('$id', '$msg', '$phone', '$today', '$device', '$id_rassilki')";
                                 
         unset($today);
         

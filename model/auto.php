@@ -14,7 +14,7 @@ define("USER", "dreadlord");
 define("PASS", "123gde456bzxd");
 
 //имя бд
-define("DB", "nod_test");
+define("DB", "nod");
 
 require_once 'interfaces.php';
 
@@ -40,6 +40,7 @@ $result = $db->super_query($query)->get_res();
 unset($db, $query);
 
 foreach ($result as $item){
+
     $us = new user($item['login'], "", $item['id']);
 
     $update = new update($us);

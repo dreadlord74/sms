@@ -32,10 +32,11 @@ class update {
      * @return $this
      */
     function update_status(){
+        echo 123;
         $query = "SELECT id_sms, device FROM `sended_sms` WHERE delivered='0' AND is_error='0' AND device IN (".implode(',', $this->us->get_devices()).")";
 
         $res = $this->db->super_query($query)->get_res();
-
+        print_arr($res);
         if (count($res) > 0){
             $ids = array();
 
@@ -45,7 +46,7 @@ class update {
             }
 
             $out = $this->us->get_out_sms($ids)->get_result();
-
+            print_arr($out);
             unset($res, $ids);
 
             $id_deliv = array();
@@ -84,7 +85,7 @@ class update {
      */
     function update_ver(){
         $in = $this->us->get_in_sms()->get_result();
-        print_arr($in);
+
         $phones = array();
         foreach($this->us->get_devices() as $device){
             if (($in[$device]['code'] == 0) and ($in[$device]['count'] != 0))
