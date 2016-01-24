@@ -28,7 +28,7 @@ $("document").ready(function(){
                 success: function(data){
                     if (data){
 
-                        var status = "", errors = 0, send = 0, deliv = 0, count = 0, otprav = 0, msg = "";
+                        var status = "", errors = 0, send = 0, deliv = 0, count = 0, otprav = 0, msg = "", phone;
 
                         $(".tab_"+id).find("tr").detach();
                         var data = $.parseJSON(data);
@@ -51,8 +51,14 @@ $("document").ready(function(){
                                 send++;
                             }
                             count++;
-                            
-                            table.append("<tr id='"+id+"'><td>"+item.fam+" "+item.name+" "+item.otch+"</td><td>"+item.phone+"</td><td>"+status+"</td></tr>");
+
+                            if (item.phone == null)
+                                phone = item.phone1;
+                            else
+                                phone = item.phone;
+                            console.log(phone);
+
+                            table.append("<tr id='"+id+"'><td>"+item.fam+" "+item.name+" "+item.otch+"</td><td>"+phone+"</td><td>"+status+"</td></tr>");
                             msg = item.msg;
                         });
                     $(".sended_"+id).text("Всего отправлено: "+count); $(".deliv_"+id).text("Доставлено: "+deliv);

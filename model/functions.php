@@ -13,9 +13,13 @@ function clear_rep(&$var){
     strip_tags(mysqli_real_escape_string($db->get_id_db() ,trim($var)));
 }
 
-function redirect(){
-    $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : PATH;
-    header("Location: $redirect");
+function redirect($link =''){
+    if ($link =''){
+        $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : PATH;
+        header("Location: $redirect");
+    }else{
+        header("Location: http://".PATH."?view=".$link);
+    }
     exit();
 }
 

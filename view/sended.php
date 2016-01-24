@@ -14,6 +14,7 @@
 <?php if(isset($result)):?>
     <?php
         $info = array();
+
     ?>
     <?php foreach($result as $key => $value):?>
 
@@ -30,7 +31,7 @@
         <?php foreach($value as $item):?>
                 <tr>
                     <td><?=$item['fam']." ".$item['name']." ".$item['otch']?></td>
-                    <td><?=$item['phone']?></td>
+                    <td><?=($item['phone']) ? $item['phone'] : $item['phone1']?></td>
                     <?php
                         if ($item['delivered'] == '1'){
                             $status = "Доставлено";
