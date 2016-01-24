@@ -131,31 +131,15 @@ switch ($view) {
         $title = TITLE." - Статус рассылок";
 
         function get ($id){
-            $query = "SELECT
-sended_sms.delivered,
-sended_sms.is_error,
-sended_sms.msg,
-sended_sms.id_rassilki,
-sended_sms.msg,
-users.fam,
-users.name,
-users.otch,
-sended_sms.phone as phone1,
-users.phone,
-users.id,
-sended_sms.id
-FROM
-sended_sms
-Left Join users ON users.phone = sended_sms.phone
-WHERE
-sended_sms.id_rassilki =  $id";
+            $query = "SELECT sended_sms.delivered, sended_sms.is_error, sended_sms.msg, sended_sms.id_rassilki, sended_sms.msg, sended_sms.id, sended_sms.phone as phone1,
+                        users.name, users.otch, users.phone, users.id, users.fam,
+                          sended_mass.tema
+                              FROM sended_sms
+                                Left Join users ON users.phone = sended_sms.phone
+                                  LEFT JOIN sended_mass ON sended_mass.id = sended_sms.id_rassilki
+                                    WHERE sended_sms.id_rassilki =  $id";
             $db = new data_base();
 
-         /*  "SELECT users.id, users.fam, users.name, users.otch, users.phone, users.gorod,
-                              sended_sms.delivered, sended_sms.`date`, sended_sms.is_error, sended_sms.id_rassilki, sended_sms.msg, sended_mass.tema
-                                FROM users Inner Join sended_sms ON users.phone = sended_sms.phone
-                                  INNER JOIN sended_mass ON sended_mass.id = sended_sms.id_rassilki
-                                    WHERE sended_sms.id_rassilki = $id ORDER BY users.fam";*/
             return $db->super_query($query)->get_res();
         }
 
@@ -169,7 +153,7 @@ sended_sms.id_rassilki =  $id";
                 exit();
                 break;
 
-            case "get_ras"://работает неправильно - доделать!!
+            case "get_ras":
 
                 $result = array();
                 print_arr($_GET);

@@ -33,7 +33,7 @@ $("document").ready(function(){
                         $(".tab_"+id).find("tr").detach();
                         var data = $.parseJSON(data);
 
-                        var _count = data.length;
+                        var count = data.length;
                        // pagination(count);
                         
                         table.append("<tr><td>ФИО</td><td>Телефон</td><td>Статус</td></tr>");
