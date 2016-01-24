@@ -25,6 +25,25 @@ function redirect($link =''){
 
 function print_arr(&$arr){
   echo"<pre>";
-  print_r($arr);
+    print_r($arr);
   echo"</pre>";
+}
+
+function sende_mail (&$mail, &$tema, &$msg)
+{
+    $message = '
+        <html>
+            <head>
+                <title>'.$tema.'</title>
+            </head>
+            <body>
+                <p>'.$msg.'</p>
+            </body>
+        </html>';
+
+    $headers  = "Content-type: text/html; charset=windows-1251 \r\n";
+    $headers .= "From: nod74.ru\r\n";
+   // $headers .= "Bcc: birthday-archive@example.com\r\n";
+
+    mail($mail, $tema, $message, $headers);
 }
