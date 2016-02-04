@@ -18,7 +18,7 @@
     ?>
     <?php foreach($result as $key => $value):?>
 
-        <?php $info['ids'][] = $value[$key]['id_rassilki']; $info['names'][] = $value[$key]['tema'];?>
+        <?php $info['ids'][] = $value[$key]['id_rassilki']; $info['names'][] = $value[$key]['tema']; $i = 0;?>
 <div id="main-<?=$value[$key]['id_rassilki']?>" class="main">
         <div style="float: left;">
 
@@ -29,7 +29,13 @@
                 <td>Статус</td>
             </tr>
         <?php foreach($value as $item):?>
-                <tr>
+                <?php $i++;
+                    if ($i % 2 == 0){
+                        echo "<tr>";
+                    }else{
+                        echo "<tr style='background: gainsboro; color: #878BB6;'>";
+                    }
+                ?>
                     <td><?=$item['fam']." ".$item['name']." ".$item['otch']?></td>
                     <td><?=($item['phone']) ? $item['phone'] : $item['phone1']?></td>
                     <?php

@@ -7,5 +7,6 @@
         <label>E-mail:<input type="text" name="mail"/></label>
         <label>Пароль:<input type="password" name="password"></label>
         <label>Повторите пароль:<input type="password" name="password2"></label>
+        <input type="submit" name="submit" value="Добавить" />
     </form>
 </div>

@@ -1,3 +1,51 @@
+* {
+    margin:0;
+    padding: 0;
+}
+.wrapper {
+    width: 1080px;
+    margin: 0 auto;
+    position: relative;
+}
+    .top-menu {
+        display: table-row;
+        background: #0196e3;
+        height: 25px;
+    }
+        .top-menu li {
+            display: table-cell;
+            transition: all 0.5s ease;
+            text-align: center;
+            vertical-align: middle;
+        }
+            .top-menu li:hover{
+                background: #4280af;
+            }
+
+            .top-menu li:active{
+                background: #4280af;
+            }
+
+        .top-menu a{
+            text-decoration: none;
+            color: #000;
+        }
+
+    .search{
+        margin-left: 400px;
+        margin-top: 20%;
+    }
+        .search input:first-child{
+            height: 26px;
+            border-radius: 3px;
+            width: 196px;
+        }
+
+        .search input:last-child{
+            height: 30px;
+            border-radius: 3px;
+            width: 50px;
+        }
 ul.hr {
     margin: 0; /* Обнуляем значение отступов */
     padding: 4px; /* Значение полей */
@@ -9,14 +57,21 @@ ul.hr li {
     border: 1px solid #000; /* Рамка вокруг текста */
     padding: 3px; /* Поля вокруг текста */
 }
-
-.not_work {
-    background-color: red;
+.li{
+    display: table-cell;
+    margin-left: 5px;
+    list-style: none;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
 }
+    .not_work {
+        background-color: red;
+    }
 
-.work {
-    background-color: green;
-}
+    .work {
+        background-color: green;
+    }
 
 .main {
     min-width: 1400px;

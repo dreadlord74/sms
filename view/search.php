@@ -1,48 +1,33 @@
 <script type="text/javascript">
 $("document").ready(function(){
-    function check_phone(){
-         if ($("#phone").val() !=""){
-             var regV = /^89\d{9}$/;
-             if ($("#phone").val().match(regV) != null){
-                 return true;
-             }else{
-                 alert("Номер телефона введен неверно!");
-                 $("#phone").val("");
-                 return false;
-             }
-         }else{
-             return true;
-         }
-    }
-    
+    $('#phone').mask('89999999999');
+
     $("#btn").click(function(){
-        var bool = false, phone = $("#phone").val();
-        bool = check_phone();
-        
-        if (bool){
+        var phone = $("#phone").val();
             $.ajax({
                 url: "./?view=search&get=phone",
                 type: "POST",
                 data: "phone="+phone,
                 success: function(data){
-                    if (data){
+                    if (data != "[]"){
                         data = $.parseJSON(data);
-                        
+
                         $.each(data, function(i, item){
-                            $("#div").text(item.fam+" "+item.name+" "+item.otch+" "+item.date+" "+item.date_ver);
+                            alert(data.fam+" "+data.name+" "+data.otch);
                         });
-                    }else if(data == "Не удается найти запись с таким номером"){
-                        alert(data);
+                    }else if(data == "[]"){
+                        alert("Не удается найти запись с таким номером");
                         $("#phone").val("");
                     }
                 }
             });
-        }
     });
 });
 </script>
+<div class="wrapper">
+    <div class="search">
+        <input type="text" required placeholder="8999999999" id="phone"/>
+        <input type="button" id="btn" value="Поиск"/>
+    </div>
 
-<input type="text" id="phone"/>
-<input type="button" id="btn" value="Поиск"/>
-
-<div id="div"></div>
+</div>

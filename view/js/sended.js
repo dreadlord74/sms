@@ -58,8 +58,12 @@ $("document").ready(function(){
                                 phone = item.phone;
                             console.log(phone);
 
-                            table.append("<tr id='"+id+"'><td>"+item.fam+" "+item.name+" "+item.otch+"</td><td>"+phone+"</td><td>"+status+"</td></tr>");
-                            msg = item.msg;
+                            if (i % 2 != 0){
+                                table.append("<tr style='background: gainsboro; color: #878BB6;' id='"+id+"'><td>"+item.fam+" "+item.name+" "+item.otch+"</td><td>"+phone+"</td><td>"+status+"</td></tr>");
+                            }else {
+                                table.append("<tr id='" + id + "'><td>" + item.fam + " " + item.name + " " + item.otch + "</td><td>" + phone + "</td><td>" + status + "</td></tr>");
+                            }
+                             msg = item.msg;
                         });
                     $(".sended_"+id).text("Всего отправлено: "+count); $(".deliv_"+id).text("Доставлено: "+deliv);
                     otprav = errors+send;

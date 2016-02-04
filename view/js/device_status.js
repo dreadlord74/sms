@@ -14,7 +14,7 @@ $(document).ready(function(){
                             }else{
                                 var status = "not_work", power = "Сервис не запущен!";
                             }
-                            $("#devices").append("<li id='lol' class='"+status+"' title='"+power+"'>"+item.manufacturer+" "+item.device_name+"</li>");
+                            $("#devices").append("<li id='lol' class='li "+status+"' title='"+power+"'>"+item.manufacturer+" "+item.device_name+"</li>");
                         });
                     }
                 }

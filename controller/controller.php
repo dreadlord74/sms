@@ -55,7 +55,7 @@ switch ($view) {
             case 'phone':
                 $query = "SELECT fam, name, otch, date, date_ver FROM users WHERE phone='{$_POST['phone']}' AND phone_ver='1'";
                 
-               // $db->super_query($query)->echo_result("json");
+                $db->super_query($query)->echo_result("json");
                 
                 exit;
             break;
