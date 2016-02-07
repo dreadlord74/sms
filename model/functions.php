@@ -47,3 +47,9 @@ function sende_mail (&$mail, &$tema, &$msg)
 
     mail($mail, $tema, $message, $headers);
 }
+
+function phoneReplace (&$phone){
+    $phone = str_replace("-", "", $phone);
+    $phone = str_replace("(", "", $phone);
+    $phone = str_replace(")", "", $phone);
+}
