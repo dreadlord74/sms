@@ -16,7 +16,7 @@ interface _sms {
 }
 
 interface _user {
-    function add_new(&$name, &$fam, &$otch, &$phone, &$mail, &$date, &$gorod = "", &$obl = "");
+    function add_new(&$name = "", &$fam = "", &$otch = "", &$phone, &$mail = "", &$gorod = "", &$obl = "");
     function add_mass();
     function mod_settings(&$setting, &$mod);
 }
