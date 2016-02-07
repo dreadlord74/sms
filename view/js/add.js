@@ -15,22 +15,23 @@ $(document).ready(function(){
                         return true;
                     }
                 }
-                
+                /*
                 function check_phone(){
                     if ($("#phone").val() !=""){
                         var regV = /^89\d{9}$/;
                         if ($("#phone").val().match(regV) != null){
-                            return true;
+                           // return true;
                         }else{
                             alert("Номер телефона введен неверно!");
-                            $("#phone").val("");
-                            return false;
+                            //$("#phone").val("");
+                           // return false;
                         }
                     }else{
-                        return true;
+                       // return true;
                     }
+                    return true
                 }
-                
+
                 function check_date(save){
                     var data = $("#date").val();
                     var regv_date = /(19|20)\d\d-((0[1-9]|1[012])-(0[1-9]|[12]\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31)/g;
@@ -44,7 +45,7 @@ $(document).ready(function(){
                             data = prompt("Указана неверная дата, повторите:");
                         }
                     }
-                    
+
                     if (data.match(regv_date) != null){
                         if (save){
                             date = data;
@@ -56,11 +57,11 @@ $(document).ready(function(){
                         }
                     }
                 }
-                
+                */
                 $("#save").click(function(){
-                    check_date(true);             
+                    check_date(true);
                 });
-                
+
                 $("#delete").click(function(){
                     date = false;
                     $("#date").val("");
@@ -74,7 +75,7 @@ $(document).ready(function(){
                     $("#mail").val("");
                     $("#date").val("");
                 }
-                
+                /*
                 function check_fio(){
                     regv = /^[А-Яа-я]{1,}$/g;
 
@@ -110,43 +111,31 @@ $(document).ready(function(){
                     }
                     
                 }
+                */
+    $('#phone').mask('8(999)999-99-99');
                 
                 $("#btn").click(function(){
-                    var check = false;
-                    check = check_fio();
-                    if (check){
-                        check = check_mail();
-                        if (check){
-                            check = check_phone();
-                            if (check){
-                                check = check_date(false);
-                                if (check){
-                                    var data = $("form").serialize();
-                                    $.ajax({
-                                       url: './?view=add_new',
-                                       type: 'POST',
-                                       data: data,
-                                       success: function(data){
-                                            
-                                            if(data){
-                                                $("#div").prepend("<p class='added'>"+data+"</p>").css("visibility", "visible");
-                                                i++;
-                                                $("#p").text("Добавленные за эту сессию: "+i);
-                                                clear();
-                                                if(date){
-                                                    $("#date").val(date);    
-                                                }
-                                            }else{
-                                                alert("Не работает");
-                                            }
-                                       }
-                                    }); 
+                    var data = $("form").serialize();
+                    $.ajax({
+                        url: './?view=add_new',
+                        type: 'POST',
+                         data: data,
+                         success: function(data){
+                             if(data){
+                                $("#div").prepend("<p class='added'>"+data+"</p>").css("visibility", "visible");
+                                i++;
+                                $("#p").text("Добавленные за эту сессию: "+i);
+                                clear();
+                                if(date){
+                                    $("#date").val(date);
                                 }
-                            }
-                        }
-                    }
+                             }else{
+                                 alert("Не работает");
+                             }
+                         }
+                    });
                 });
-                
+   /*
 $("#check_phone").change(function(){
     $.ajax({
         url: "./?view=not_view&do=confirm_reg",
@@ -190,5 +179,5 @@ $("#click").click(function(){
         });
     }
 });
-
+*/
 });
