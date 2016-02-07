@@ -120,6 +120,7 @@ class data_base extends vivod
         }else{
             $this->query($query);
             $this->result = mysqli_fetch_assoc($this->get_id());
+            //print_r($this->result);
         }
         return $this;
     }
