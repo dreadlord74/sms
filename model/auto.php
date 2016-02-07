@@ -45,7 +45,7 @@ foreach ($result as $item){
 
     $update = new update($us);
 
-    $update->update_status()->update_ver();
+    $update->update_status();
 
     unset($us, $update);
 }
