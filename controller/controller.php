@@ -204,7 +204,7 @@ width: 173px; height: 20px;'>";
 
             default:
 
-                $query = "SELECT tema, id, msg FROM sended_mass";
+                $query = "SELECT tema, id, msg FROM sended_mass WHERE user_id=".$_SESSION[id];
 
                 $res = $db->super_query($query)->get_res();
 
