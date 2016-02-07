@@ -39,6 +39,12 @@ if ((isset($_SESSION['login'])) and (isset($_SESSION['id']))){
             }
         }
 
+        if (isset($_GET)){
+            foreach ($_GET as $item){
+                clear_rep($item);
+            }
+        }
+
     }else{
         $view = 'auth';
         $echo = 'Авторизация не удалась!';
@@ -53,9 +59,11 @@ switch ($view) {
         
         switch($get){
             case 'phone':
-                $query = "SELECT fam, name, otch, date, date_ver FROM users WHERE phone='{$_POST['phone']}' AND phone_ver='1'";
+                $phone = $_POST['phone'];
+                phoneReplace($phone);
+                $query = "SELECT fam, name, otch, date FROM users WHERE phone='$phone'";
                 
-                $db->super_query($query)->echo_result("json");
+                $db->super_query($query, false)->echo_result("json");
                 
                 exit;
             break;
@@ -108,14 +116,39 @@ switch ($view) {
             
             case 3:
                 //по области
-                $vivod_left = "<p>Введите город: </p>";
-                $vivod_right = "<p><input type=\"text\" id=\"gorod\" name=\"gorod\"/></p>";
+
+                $query = "SELECT * FROM goroda WHERE obl=".$us->obl;
+
+                $goroda = $db->super_query($query)->get_res();
+
+                $dopOptions = "<label for='gorod'>Выберите город: <select style='position: relative; float: right;
+width: 173px; height: 20px;'>";
+
+                foreach ($goroda as $gorod){
+                    $dopOptions .= "<option name='gorod' value='".$gorod['id']."'>".$gorod['gorod']."<option>";
+                }
+
+                $dopOptions .= "</select></label>";
                 
             break;
+
+            case 1:
+                $query = "SELECT * FROM goroda WHERE obl=".$us->obl;
+
+                $goroda = $db->super_query($query)->get_res();
+
+                $dopOptions = "<label for='gorod'>Выберите город: <select style='position: relative; float: right;
+width: 173px; height: 20px;'>";
+
+                foreach ($goroda as $gorod){
+                    $dopOptions .= "<option name='gorod' value='".$gorod['id']."'>".$gorod['gorod']."<option>";
+                }
+
+                $dopOptions .= "</select></label>";
+                break;
             
             default:
-                $vivod_left = "";
-                $vivod_right = "";
+                $dopOptions = "";
             break;
         }
 
@@ -159,8 +192,8 @@ switch ($view) {
                 print_arr($_GET);
                 if (isset($_GET['sub'])){
                     foreach ($_GET as $key => $value)
-                        if ($_GET[$key] == "on")
-                            $result[] = get($key);
+                        if ($key == "on")
+                            $result[] = get($value);
                 }else
                     if (isset($_SESSION['last_id']))
                         $result[] = get($_SESSION['last_id']);
@@ -200,8 +233,13 @@ switch ($view) {
                 $gorod = "";
             break;
         }
-            
-		$us->add_new($_POST['name'], $_POST['fam'], $_POST['otch'], $_POST['phone'], $_POST['mail'], $_POST['date'], $gorod, $obl)->echo_result("string");
+
+        $fio = array();
+        $fio[0] = empty($_POST['name']) ? "" : $_POST['name'];
+        $fio[1] = empty($_POST['fam']) ? "" : $_POST['fam'];
+        $fio[2] = empty($_POST['otch']) ? "" : $_POST['otch'];
+
+		$us->add_new($fio[0], $fio[1],$fio[2], $_POST['phone'], $_POST['mail'], $gorod, $obl)->echo_result("string");
 
 		break;
     
@@ -210,7 +248,7 @@ switch ($view) {
 
         switch($do){
             case "send":
-                $query = "SELECT phone FROM `users` WHERE phone_ver='1' AND gorod='{$us->gorod}'";
+                $query = "SELECT phone FROM `users` WHERE phone_send='1' AND gorod='{$us->gorod}'";
 
                 $res = $db->super_query($query)->get_res();
 
@@ -272,7 +310,7 @@ switch ($view) {
     case 'view_ver':
         $title = TITLE." - Все подтвержденные";
     
-        $query = "SELECT * FROM users WHERE phone_ver='1' OR email_ver='1' AND gorod={$us->gorod}";
+        $query = "SELECT * FROM users WHERE phone_send='1' OR email_send='1' AND gorod={$us->gorod}";
         
         $res = $db->super_query($query)->get_res();
         
@@ -299,4 +337,4 @@ switch ($view) {
 }
 unset($db, $query, $do, $get);
 
-require_once "/view/index.php";
+require_once "view/index.php";
