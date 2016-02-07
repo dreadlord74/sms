@@ -377,7 +377,6 @@ class user extends vivod implements _user, _devices, _sms
         $this->db->write_log(5);
         session_unset();
         session_destroy();
-        unset($this);
         redirect();
     }
 
@@ -394,9 +393,10 @@ class user extends vivod implements _user, _devices, _sms
      * @param string $obl
      * @return $this
      */
-	public function add_new(&$name, &$fam, &$otch, &$phone, &$mail, &$date, &$gorod = "", &$obl = "")
+	public function add_new(&$name = "", &$fam = "", &$otch = "", &$phone, &$mail = "", &$gorod = "", &$obl = "")
     {
         $ret = $fam." ".$name." ".$otch;
+        phoneReplace($phone);
 
         //Если контакт с таким номером уже есть, то он не будет добавлен
         if ($this->db->count_rows("SELECT id FROM users WHERE phone='$phone'")->get_res())
@@ -405,10 +405,10 @@ class user extends vivod implements _user, _devices, _sms
             return $this;
         }
 
-        $conf_reg = ((int)$this->get_conf_reg() == 0) ? 1 : 0;
+        //$conf_reg = ((int)$this->get_conf_reg() == 0) ? 1 : 0;
 
-        $query = "INSERT INTO users (fam, name, otch, phone, mail, date, phone_ver, obl, gorod)
-							  VALUES ('$fam', '$name', '$otch', '$phone', '$mail', '$date', '$conf_reg', ";
+        $query = "INSERT INTO users (fam, name, otch, phone, mail, date, obl, gorod)
+							  VALUES ('$fam', '$name', '$otch', '$phone', '$mail', '".date("Y-m-d")."', ";
 		
         switch ($this->get_prava()){
             case 4:
@@ -473,6 +473,7 @@ class user extends vivod implements _user, _devices, _sms
 
         $this->db->query($query) or $ret = false;
 
+        /*Этот код отвечает за проверку номеров. Удалять жалко
         if ($ret){
             
             $_SESSION['count']++;
@@ -516,7 +517,9 @@ class user extends vivod implements _user, _devices, _sms
                     }
                 }
         }
-        
+        */
+
+
         $this->result = $ret;
 
         $this->db->write_log(3, $this->db->get_last_id());
