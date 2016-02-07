@@ -30,14 +30,14 @@ $("document").ready(function(){
 
                         var status = "", errors = 0, send = 0, deliv = 0, count = 0, otprav = 0, msg = "", phone;
 
-                        $(".tab_"+id).find("tr").detach();
+                        //$(".tab_"+id).find("div").detach();
                         var data = $.parseJSON(data);
 
                         var count = data.length;
                        // pagination(count);
                         
-                        table.append("<tr><td>ФИО</td><td>Телефон</td><td>Статус</td></tr>");
-                        
+                       // table.append("<div class='row'><span>ФИО</span><span>Телефон</span><span>Статус</span></div>");
+                        var it = 0;
                         $.each(data, function(i, item){
 
                             if (item.is_error == 1){
@@ -51,18 +51,43 @@ $("document").ready(function(){
                                 send++;
                             }
                             count++;
-
+/*
                             if (item.phone == null)
                                 phone = item.phone1;
                             else
                                 phone = item.phone;
-                            console.log(phone);
 
-                            if (i % 2 != 0){
-                                table.append("<tr style='background: gainsboro; color: #878BB6;' id='"+id+"'><td>"+item.fam+" "+item.name+" "+item.otch+"</td><td>"+phone+"</td><td>"+status+"</td></tr>");
-                            }else {
-                                table.append("<tr id='" + id + "'><td>" + item.fam + " " + item.name + " " + item.otch + "</td><td>" + phone + "</td><td>" + status + "</td></tr>");
+                            if (it <= 32){
+                                if (it == 0){
+                                    table.append("<div class='page' style='display: block;'>");
+
+                                    if (i % 2 != 0){
+                                        table.append("<div class='row' style='background: gainsboro; color: #878BB6;' id='"+id+"'><span>"+item.fam+" "+item.name+" "+item.otch+"</span><span>"+phone+"</span><span>"+status+"</span></div>");
+                                    }else {
+                                        table.append("<div class='row' id='" + id + "'><span>" + item.fam + " " + item.name + " " + item.otch + "</span><span>" + phone + "</span><span>" + status + "</span></div>");
+                                    }
+                                    table.append("</div>");
+                                }else{
+                                    if (i % 2 != 0){
+                                        table.append("<div class='row' style='background: gainsboro; color: #878BB6;' id='"+id+"'><span>"+item.fam+" "+item.name+" "+item.otch+"</span><span>"+phone+"</span><span>"+status+"</span></div>");
+                                    }else {
+                                        table.append("<div class='row' id='" + id + "'><span>" + item.fam + " " + item.name + " " + item.otch + "</span><span>" + phone + "</span><span>" + status + "</span></div>");
+                                    }
+                                }
+                                it++;
+                            }else{
+                                table.append("<div class='page' style='display: none;'>");
+
+                                if (i % 2 != 0){
+                                    table.append("<div class='row' style='background: gainsboro; color: #878BB6;' id='"+id+"'><span>"+item.fam+" "+item.name+" "+item.otch+"</span><span>"+phone+"</span><span>"+status+"</span></div>");
+                                }else {
+                                    table.append("<div class='row' id='" + id + "'><span>" + item.fam + " " + item.name + " " + item.otch + "</span><span>" + phone + "</span><span>" + status + "</span></div>");
+                                }
+
+                                table.append("</div>");
                             }
+
+*/
                              msg = item.msg;
                         });
                     $(".sended_"+id).text("Всего отправлено: "+count); $(".deliv_"+id).text("Доставлено: "+deliv);

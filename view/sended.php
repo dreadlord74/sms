@@ -1,8 +1,9 @@
 <?php if(isset($res)):?>
 
 <form action="<?=PATH?>?view=sended" method="get" class="sended_center">
+
     <?php foreach($res as $value):?>
-        <input class="checkbox" type="checkbox" name="<?=$value['id']?>" id="<?=$value['id']?>"> <label for="<?=$value['id']?>"><?=$value['tema']?></label><br />
+        <input class="checkbox" type="radio" name="on" value="<?=$value['id']?>" id="<?=$value['id']?>"> <label for="<?=$value['id']?>"><?=$value['tema']?></label><br />
     <?php endforeach?>
         <input type="hidden" name="view" value="sended">
         <input type="hidden" name="do" value="get_ras">
@@ -20,24 +21,29 @@
 
         <?php $info['ids'][] = $value[$key]['id_rassilki']; $info['names'][] = $value[$key]['tema']; $i = 0;?>
 <div id="main-<?=$value[$key]['id_rassilki']?>" class="main">
-        <div style="float: left;">
+        <div style="float: left; position:relative;">
+        <script type="text/javascript">
+            jQuery(window).load(function() {
+                $('.tab_<?=$value[$key]['id_rassilki']?>').MyPagination({height: 600, fadeSpeed: 400, id: <?=$value[$key]['id_rassilki']?>});
+            });
+        </script>
 
-        <table class="tab_<?=$value[$key]['id_rassilki']?>" id="tab">
-            <tr>
-                <td>ФИО</td>
-                <td>Номер телефона</td>
-                <td>Статус</td>
-            </tr>
+            <div class="tab_<?=$value[$key]['id_rassilki']?>" id="tab">
+                <div class="row">
+                    <span>ФИО</span>
+                    <span>Номер телефона</span>
+                    <span>Статус</span>
+                </div>
         <?php foreach($value as $item):?>
                 <?php $i++;
                     if ($i % 2 == 0){
-                        echo "<tr>";
+                        echo "<div class='row'>";
                     }else{
-                        echo "<tr style='background: gainsboro; color: #878BB6;'>";
+                        echo "<div class='row' style='background: gainsboro; color: #878BB6;'>";
                     }
                 ?>
-                    <td><?=$item['fam']." ".$item['name']." ".$item['otch']?></td>
-                    <td><?=($item['phone']) ? $item['phone'] : $item['phone1']?></td>
+                    <span><?=$item['fam']." ".$item['name']." ".$item['otch']?></span>
+                    <span><?=($item['phone']) ? $item['phone'] : $item['phone1']?></span>
                     <?php
                         if ($item['delivered'] == '1'){
                             $status = "Доставлено";
@@ -47,10 +53,26 @@
                             $status = "Отправлено";
                         }
                     ?>
-                    <td><?=$status?></td>
-                </tr>
+                    <span><?=$status?></span>
+                </div>
         <?php endforeach?>
-        </table>
+            </div>
+            <div class="pagination">
+
+                <ul>
+
+                    <li><a href="#" id="prev" class="prevnext">« Туда</a></li>
+
+                    <li><a href="#" id="next" class="prevnext">Сюда »</a></li>
+
+                </ul>
+
+                <br />
+
+                <div id="page_number" class="page_number"></div>
+
+            </div>
+
         </div>
     <div class="stat_msg">
         <div class="msg" id="msg_<?=$value[$key]['id_rassilki']?>"></div>
@@ -62,7 +84,7 @@
     <?php endforeach?>
 
     <ul id="nav">
-        <li><a class="current" href="#main-<?=$info['ids'][0]?>"><?=$info['names'][0]?></a></li>
+        <li><a class="current" id="a" href="#main-<?=$info['ids'][0]?>"><?=$info['names'][0]?></a></li>
     <?php foreach($info['names'] as $key => $name):?>
         <?php if ($key == 0) continue?>
         <li><a class href="#main-<?=$info['ids'][$key]?>"><?=$name?></a></li>
@@ -73,7 +95,7 @@
     <script src="<?=VIEW?>js/sended.js" type="text/javascript"></script>
     <script type="application/javascript">
                 $(document).ready(function() {
-                    $("a").click(function () {
+                    $("#a").click(function () {
                         $(".current").removeClass("current");
                         $(this).addClass("current");
                         var elementClick = $(this).attr("href");

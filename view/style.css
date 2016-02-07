@@ -22,7 +22,7 @@
                 background: #4280af;
             }
 
-            .top-menu li:active{
+            .top-menu li:focus{
                 background: #4280af;
             }
 
@@ -79,18 +79,32 @@ ul.hr li {
 }
 
 .center {
+    padding: 0px 10px 0 15px;
     border: 1px solid gray;
-	top: 50%; /* Отступ в процентах от верхнего края окна */
-	left: 50%; /* Отступ в процентах от левого края окна */
-	width: 360px; /* Ширина блока */
-	height: 260px; /* Высота блока */
-	position: absolute; /* Абсолютное позиционирование блока */
-	margin-top: -130px; /* Отрицательный отступ от верхнего края страницы, должен равняться половине высоты блока со знаком минус */
-	margin-left: -180px; /* Отрицательный отступ от левого края страницы, должен равняться половине высоты блока со знаком минус */
+    top: 50%;
+    left: 50%;
+    width: 310px;
+    height: 260px;
+    position: absolute;
+    margin-top: -130px;
+    margin-left: -160px;
 }
+    .center label {
+        text-align: left;
+        display: block;
+        margin-top: 24px;
+    }
+
+    .center input {
+        position: relative;
+        float: right;
+        text-align: center;
+        height: 20px;
+        border-radius: 5px;
+    }
 
 .add_new {
-    width: 176px; 
+    width: 176px;
     height: 226px; 
     float: left;
 }
@@ -261,3 +275,14 @@ ul{
         margin: 2px;
         float: right;
     }
+
+    #tab {
+        display: table;
+    }
+        .row {
+            display: table-row;
+        }
+            .row span{
+                display: table-cell;
+                width: 300px;
+            }
