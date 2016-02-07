@@ -32,17 +32,18 @@ class update {
      * @return $this
      */
     function update_status(){
-        echo 123;
-        $query = "SELECT id_sms, device FROM `sended_sms` WHERE delivered='0' AND is_error='0' AND device IN (".implode(',', $this->us->get_devices()).")";
 
+        $query = "SELECT id_sms, device FROM `sended_sms` WHERE delivered='0' AND is_error='0' AND device IN (".implode(',', $this->us->get_devices()).")";
+echo $query;
         $res = $this->db->super_query($query)->get_res();
         print_arr($res);
         if (count($res) > 0){
             $ids = array();
 
             foreach ($res as $item){
-                $ids[$item['device']][] = substr($item['id_sms'], -7);///ПО НЕВЕДОМОЙ ПРИЧИНЕ ПЕРЕД АЙДИ СМС СТОИТ ХРЕНОВА ТУЧА НУЛЕЙ
+               // $ids[$item['device']][] = substr($item['id_sms'], -7);///ПО НЕВЕДОМОЙ ПРИЧИНЕ ПЕРЕД АЙДИ СМС СТОИТ ХРЕНОВА ТУЧА НУЛЕЙ
                 //ВРЕМЕННЫЙ КОСТЫЛЬ. НЕ ЗАБЫТЬ ПЕРЕДЕЛАТЬ!!1
+                $ids[$item['device']][] = $item[id_sms];
             }
 
             $out = $this->us->get_out_sms($ids)->get_result();
@@ -63,7 +64,7 @@ class update {
                         $id_error[] = $value['id'];
                     }
                 }
-
+                print_arr($id_deliv);
                 if (count($id_deliv) > 0){
                     $query = "UPDATE `sended_sms` SET delivered='1' WHERE id_sms IN(".implode(',', $id_deliv).") AND device='$device'";
 
