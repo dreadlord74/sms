@@ -28,8 +28,21 @@ class devices extends device_sms implements _devices{
      */
     function __construct(){
 		$this->devices = array();
-        $this->devices = $_SESSION['devices'];
-        $this->set_token()->default_dev = $_SESSION['default'];
+
+        $query = "SELECT device FROM devices WHERE is_active='1'";
+
+        $db = new data_base();
+
+        $devices = $db->super_query($query)->get_res();
+
+        foreach ($devices as $device)
+            $this->devices[] = $device;
+
+        $query = "SELECT device FROM devices WHERE is_default='1'";
+
+        $default = $db->super_query($query, false)->get_res();
+
+        $this->set_token()->default_dev = $default;
 	}
     
     /**

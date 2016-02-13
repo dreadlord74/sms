@@ -14,7 +14,7 @@ class device_sms extends vivod{
      */
     protected function set_token($token = ""){
         if ($token == ""){
-            $this->token = $_SESSION['token'];
+            $this->token = TOKEN;
         }else{
             $this->token = $token;
         }

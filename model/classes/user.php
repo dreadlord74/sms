@@ -234,7 +234,7 @@ class user extends vivod implements _user, _devices, _sms
         $this->db = new data_base;
         
         if ($id){
-            $query = "SELECT admin.id, admin.login, admin.devices, admin.phone, admin.token, admin.default_dev, settings.id AS settings, settings.confirm_reg, settings.cofirm_msg, obl.id AS obl, goroda.id AS gorod, prava.id AS prava FROM admin
+            $query = "SELECT admin.id, admin.login, admin.phone, settings.id AS settings, settings.confirm_reg, settings.cofirm_msg, obl.id AS obl, goroda.id AS gorod, prava.id AS prava FROM admin
                             INNER JOIN obl ON obl.id = admin.obl
                                 INNER JOIN goroda ON goroda.id = admin.gorod
                                     INNER JOIN prava ON prava.id = admin.prava
@@ -245,9 +245,8 @@ class user extends vivod implements _user, _devices, _sms
             
             if ($res){
                 $this->set_login($login)->set_id($res['id'])->set_prava($res['prava'])->set_gorod($res['gorod'])->set_obl($res['obl'])->set_conf_reg($res['confirm_reg'])->set_conf_msg($res['cofirm_msg'])->set_settings($res['settings']);
-                $_SESSION['token'] = $res['token'];
 
-                $devices = explode(",", $res['devices']);
+                /*$devices = explode(",", $res['devices']);
                 
                 $i = 0;
                 foreach ($devices as $item){
@@ -257,7 +256,7 @@ class user extends vivod implements _user, _devices, _sms
                
                 $_SESSION['count_dev'] = count($devices);
                 
-                $_SESSION['default'] = $res['default_dev'];
+                $_SESSION['default'] = $res['default_dev'];*/
 
                 $this->phone = $res['phone'];
              }    

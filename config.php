@@ -35,4 +35,7 @@ define("TITLE","Смс-рассылка");
 //email администратора
 define("ADMIN_EMAIL", "dreadlord74@yandex.ru");
 
+//Токен для доступа к аккуанту
+define ("TOKEN", "78e34841c362cee67622a678e5f1c01f");
+
 error_reporting ( E_ALL ^ E_NOTICE);
