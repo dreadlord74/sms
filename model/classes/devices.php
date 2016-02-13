@@ -36,13 +36,14 @@ class devices extends device_sms implements _devices{
         $devices = $db->super_query($query)->get_res();
 
         foreach ($devices as $device)
-            $this->devices[] = $device;
+            $this->devices[] = $device[device];
+
 
         $query = "SELECT device FROM devices WHERE is_default='1'";
 
         $default = $db->super_query($query, false)->get_res();
 
-        $this->set_token()->default_dev = $default;
+        $this->set_token()->default_dev = $default[device];
 	}
     
     /**
