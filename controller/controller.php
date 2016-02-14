@@ -47,7 +47,6 @@ if ((isset($_SESSION['login'])) and (isset($_SESSION['id']))){
 
     }else{
         $view = 'auth';
-        $echo = 'Авторизация не удалась!';
     }
 }else{
     $view = 'auth';
@@ -73,13 +72,16 @@ switch ($view) {
         
     case 'auth':
         $title = TITLE." - Авторизация";
-
+        $auth = false;
         if ($_GET['do'] == 'auth'){
             $us = new user($_POST['login'], $_POST['pass']);
-            if ($us){
-                redirect();
-            }else{
-                $echo = "Пользователь с таким паролем не обнаружен";
+            if ($auth) {
+                echo "true";
+                exit();
+            }
+            else{
+                echo "false";
+                exit;
             }
         }
     break;
