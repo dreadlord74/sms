@@ -268,12 +268,22 @@ class user extends vivod implements _user, _devices, _sms
                             WHERE login='$login' AND pass='$pass' AND is_activ='1'";
                             
             $res = $this->db->super_query($query, false)->get_res() or $res = false;
-            
-            if ($res){
+
+            $count_rows = $this->db->rows;
+            global $auth;
+            if ($count_rows == 1){
                 $_SESSION['login'] = $res['login'];
                 $_SESSION['id'] = $res['id'];
                 $_SESSION['access'] = $res['prava'];
-                $this->db->write_log(1);
+                $this->db->write_log(1, "Вход! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT]);
+                $auth = true;
+            }else if ($count_rows == 0){
+                $query = "SELECT login, id FROM admin WHERE login='$login'";
+
+                $res = $this->db->super_query($query, false)->get_res();
+
+                $this->db->write_log(1, "Неудачная попытка входа в учетную запись ".$res[login]."! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT], $res[id]);
+                $auth = false;
             }
         }
     }
