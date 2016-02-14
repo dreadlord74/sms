@@ -13,6 +13,8 @@ class data_base extends vivod
     
     private $db = false;
 
+    public $rows;
+
     /**
      * Конструктор класса
      * Устанавливает соединение с базой данных
@@ -71,7 +73,12 @@ class data_base extends vivod
     }
 
     public function count_rows($query){
-        $this->query($query)->set_res(mysqli_num_rows($this->q_id));
+        $this->query($query)->set_res(mysqli_num_rows($this->q_id));//оставлено для совме стимости с ранним кодом
+        return $this;
+    }
+
+    private function rows (&$id){
+        $this->rows = mysqli_num_rows($id);
         return $this;
     }
 
@@ -80,8 +87,9 @@ class data_base extends vivod
      * @param $action_id - id действия, которое совершил пользователь
      * @param $opisanie - описание действия
      */
-    public function write_log($action_id, $opisanie = ""){
-        $query = "INSERT INTO history (user_id, action_id, date_time, opisanie) VALUES ('{$_SESSION['id']}', '$action_id', '".date("Y-m-d H:i:s")."', '$opisanie')";
+    public function write_log($action_id, $opisanie = "", $id = ""){
+        $id = ($id == "") ? $_SESSION[id] : $id;
+        $query = "INSERT INTO history (user_id, action_id, date_time, opisanie) VALUES ('$id', '$action_id', '".date("Y-m-d H:i:s")."', '$opisanie')";
         $this->db->query($query);
     }
 
@@ -122,6 +130,9 @@ class data_base extends vivod
             $this->result = mysqli_fetch_assoc($this->get_id());
             //print_r($this->result);
         }
+
+        $this->rows($this->q_id);
+
         return $this;
     }
 
