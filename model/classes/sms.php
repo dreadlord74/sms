@@ -234,7 +234,7 @@ class sms extends device_sms implements _sms{
                             $this->db->write_log(4, $tema);
                          }
                          $resultat[$device] = $result['code'];
-                        }
+                    }
 
                  $this->set_result($resultat);
                  
