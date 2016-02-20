@@ -13,7 +13,7 @@ var attempts = 0;
             type: "POST",
             data: "text="+text+"&tema="+tema+"&id="+id,
             success: function(data){
-                alert(data);
+                //alert(data);
 				$("#div_al").append(data);
                 if (data){
                     data = $.parseJSON(data);
@@ -43,7 +43,7 @@ var attempts = 0;
             type: "POST",
             data: "id="+id+"&pass="+pass,
             success: function(data){
-                alert(data);
+                //alert(data);
                 if (data)
                     send(data, text, tema);
                 else{
@@ -64,9 +64,9 @@ var attempts = 0;
             type: "POST",
             data: "text="+text+"&tema="+tema,
             success: function(data){
-                alert(data);
+               // alert(data);
                 if (data){
-                    var pass = prompt("На ваш номер отправлено сообщение с паролем. Введите пароль для запуска рассылки.");
+                    var pass = prompt("На ваш номер отправлено сообщение с паролем. Введите пароль для запуска рассылки. Не закрывайте поле ввода пока не введёте пароль.");
                     attempt(text, tema, pass, data);
                 }else
                     alert("Не удалось выполнить смс-подтверждение, повторите позже.");
