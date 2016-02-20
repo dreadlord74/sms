@@ -2,21 +2,9 @@
 
 define ("SCRIPT", TRUE);
 
-//домен
-define("PATH", "http://localhost/sms/");
-//сервер
-define("HOST", "localhost");
-
-//пользователь
-define("USER", "dreadlord");
-
-//пароль
-define("PASS", "123gde456bzxd");
-
-//имя бд
-define("DB", "nod");
-
 require_once 'interfaces.php';
+
+require_once "../config.php";
 
 function print_arr($arr){
   echo"<pre>";
@@ -33,7 +21,7 @@ function __autoload($class){
 
 $db = new data_base();
 
-$query = "SELECT id, login, devices FROM admin";
+$query = "SELECT id, login FROM admin";
 
 $result = $db->super_query($query)->get_res();
 
