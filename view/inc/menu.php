@@ -1,6 +1,6 @@
 <div class="wrapper" style="display: table">
     <ul class="top-menu">
-        <li><a href="?view=add">Добавить нового</a></li>
+        <li><a href="?view=add">Добавить контакт в рассылку</a></li>
         <li><a href="?view=send_mass">Массовая рассылка</a></li>
 
         <li><a href="?view=sended">Просмотр статусов рассылок</a></li>
