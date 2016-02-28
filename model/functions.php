@@ -48,8 +48,26 @@ function sende_mail (&$mail, &$tema, &$msg)
     mail($mail, $tema, $message, $headers);
 }
 
+/**
+ * Фунция убирает из телефонного номера все кроме цифр
+ * @param $phone
+ */
 function phoneReplace (&$phone){
     $phone = str_replace("-", "", $phone);
     $phone = str_replace("(", "", $phone);
     $phone = str_replace(")", "", $phone);
+}
+
+/**
+ * Фунция генерирующая пароль
+ * @return int
+ */
+function gen_pass()
+{
+    $rand = "";
+
+    for($i = 0; $i<=3; $i++)
+        $rand .= rand(0, 9);
+
+    return (int)$rand;
 }
