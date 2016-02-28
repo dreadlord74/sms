@@ -236,15 +236,16 @@ class user extends vivod implements _user, _devices, _sms
         $settings = $this->db->super_query("SELECT * FROM system_settings", false)->get_res();
 
         if ($id){
+
             $query = "SELECT admin.id, admin.login, admin.phone, settings.id AS settings, settings.confirm_reg, settings.cofirm_msg, obl.id AS obl, goroda.id AS gorod, prava.id AS prava FROM admin
-                            INNER JOIN obl ON obl.id = admin.obl
-                                INNER JOIN goroda ON goroda.id = admin.gorod
-                                    INNER JOIN prava ON prava.id = admin.prava
-                                        INNER JOIN settings ON settings.id = admin.settings_id
+                           LEFT JOIN obl ON obl.id = admin.obl
+                                LEFT JOIN goroda ON goroda.id = admin.gorod
+                                   LEFT JOIN prava ON prava.id = admin.prava
+                                        LEFT JOIN settings ON settings.id = admin.settings_id
                             WHERE admin.login='$login' AND admin.id='$id' AND admin.is_activ='1'";
                             
             $res = $this->db->super_query($query, false)->get_res() or $res = false;
-            
+           //print_arr($res);
             if ($res){
                 $this->set_login($login)->set_id($res['id'])->set_prava($res['prava'])->set_gorod($res['gorod'])->set_obl($res['obl'])->set_conf_reg($res['confirm_reg'])->set_conf_msg($res['cofirm_msg'])->set_settings($res['settings']);
 
@@ -297,6 +298,10 @@ class user extends vivod implements _user, _devices, _sms
                     $this->db->write_log(1, "Вход! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT]);
                     $this->db->query("UPDATE admin SET auth_pass=0 WHERE id=".$res[id]);
                     $auth = "true";
+                }
+                else
+                {
+                    $auth = "pass";
                 }
             }else if ($count_rows == 0){
                 $query = "SELECT login, id FROM admin WHERE login='$login'";

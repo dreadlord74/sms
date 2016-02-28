@@ -12,6 +12,9 @@ $db = new data_base();
 
 if ((isset($_SESSION['login'])) and (isset($_SESSION['id']))){
     switch ($_SESSION['access']){
+        case 1:
+            $us = new Admin($_SESSION['login'], "", $_SESSION['id']);
+            break;
         case 2:
             //ЦШ
             $us = new user_central($_SESSION['login'], "", $_SESSION['id']);
@@ -314,8 +317,7 @@ width: 173px; height: 20px;'>";
         
     case 'view_ver':
         $title = TITLE." - Все подтвержденные";
-    
-        $query = "SELECT * FROM users WHERE phone_send='1' OR email_send='1' AND gorod={$us->gorod}";
+        $query = "SELECT * FROM users WHERE (phone_send='1' OR email_send='1') AND gorod={$us->gorod}";
         
         $res = $db->super_query($query)->get_res();
         

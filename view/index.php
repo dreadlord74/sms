@@ -17,6 +17,7 @@
 
 
 <?php
+   // print_arr($_SESSION);
 
     if (isset($_SESSION['id'])){
         include VIEW."/inc/menu.php";

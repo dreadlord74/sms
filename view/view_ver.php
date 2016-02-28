@@ -3,8 +3,7 @@
     <td>ФИО</td>
     <td>Номер телефона</td>
     <td>e-mail</td>
-    <td>Дата зополнения анкеты</td>
-    <td>Дата верификации телефона</td>
+    <td>Дата внесения в базу</td>
 </tr>
 <?php foreach($res as $item):?>
 <tr>
@@ -12,7 +11,6 @@
     <td><?=$item['phone']?></td>
     <td><?=$item['mail']?></td>
     <td><?=$item['date']?></td>
-    <td><?=$item['date_ver']?></td>
 </tr>
 <?php endforeach?>
 </table>

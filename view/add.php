@@ -29,7 +29,7 @@
             <?=$dopOptions?>
             <label for="phone">Введите телефон:* <input type='text' id="phone" name="phone" required placeholder="8(999)999-99-99"/></label>
             <label for="mail">Введите e-mail: <input type="text" id="mail" name="mail"/></label>
-            <input type="button" id="btn" value="Отправить" style="    height: 35px;
+            <input type="button" id="btn" value="Добавить" style="    height: 35px;
     width: 270px;
     margin-top: 11px;
     margin-left: 18px;
