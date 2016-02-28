@@ -68,13 +68,8 @@ class sms extends device_sms implements _sms{
 
         $this->set_result(true);
 
-        $rand = "";
-
-        for($i = 0; $i<=3; $i++){
-            $rand .= rand(0, 9);
-        }
-
-        $rand = (int)$rand;
+        //генерация пароля
+        $rand = gen_pass();
 
         $query = "INSERT INTO want_to_send (pass, user_id, tema, msg)
                             VALUES ('$rand', '{$_SESSION['id']}', '$tema', '$msg')";
