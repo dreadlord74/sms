@@ -232,7 +232,9 @@ class user extends vivod implements _user, _devices, _sms
     
     function __construct ($login, $pass = "", $id = false){
         $this->db = new data_base;
-        
+
+        $settings = $this->db->super_query("SELECT * FROM system_settings", false)->get_res();
+
         if ($id){
             $query = "SELECT admin.id, admin.login, admin.phone, settings.id AS settings, settings.confirm_reg, settings.cofirm_msg, obl.id AS obl, goroda.id AS gorod, prava.id AS prava FROM admin
                             INNER JOIN obl ON obl.id = admin.obl
@@ -263,27 +265,46 @@ class user extends vivod implements _user, _devices, _sms
         }else{
             $pass = md5($pass);
             $_SESSION['added'] = "";
-            $query = "SELECT admin.id, login, prava.id AS prava FROM admin 
+            $query = "SELECT admin.id, login, prava.id AS prava, auth_pass, phone FROM admin
                             INNER JOIN prava ON prava.id = admin.prava                             
                             WHERE login='$login' AND pass='$pass' AND is_activ='1'";
                             
             $res = $this->db->super_query($query, false)->get_res() or $res = false;
 
             $count_rows = $this->db->rows;
+
+            //глобальная переменная, определяющая успешность авторизации
             global $auth;
             if ($count_rows == 1){
-                $_SESSION['login'] = $res['login'];
-                $_SESSION['id'] = $res['id'];
-                $_SESSION['access'] = $res['prava'];
-                $this->db->write_log(1, "Вход! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT]);
-                $auth = true;
+
+                if ($res[auth_pass] == 0)
+                {
+                    $auth = "pass";
+
+                    $password = gen_pass();
+
+                    $this->send_sms(str_replace("[пароль]", $password, $settings[auth_masg]), $res[phone]);
+
+
+                    $this->db->query("UPDATE admin SET auth_pass=".$password." WHERE id=".$res[id]);
+                    //return false;
+                }
+                else if ($res[auth_pass] == $_POST[password])
+                {
+                    $_SESSION['login'] = $res['login'];
+                    $_SESSION['id'] = $res['id'];
+                    $_SESSION['access'] = $res['prava'];
+                    $this->db->write_log(1, "Вход! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT]);
+                    $this->db->query("UPDATE admin SET auth_pass=0 WHERE id=".$res[id]);
+                    $auth = "true";
+                }
             }else if ($count_rows == 0){
                 $query = "SELECT login, id FROM admin WHERE login='$login'";
 
                 $res = $this->db->super_query($query, false)->get_res();
 
                 $this->db->write_log(1, "Неудачная попытка входа в учетную запись ".$res[login]."! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT], $res[id]);
-                $auth = false;
+                $auth = "false";
             }
         }
     }

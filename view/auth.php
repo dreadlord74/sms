@@ -1,5 +1,30 @@
 <script type="text/javascript">
     $(document).ready(function(){
+        var count_pass = 0;
+        function auth(pass)
+        {
+            var data = $(".auth").serialize();
+            //alert(data);
+            $.ajax({
+                url: "./?do=auth",
+                type: "POST",
+                data: data+"&password="+pass,
+                success: function(data){
+                    alert(data);
+                    if (data == "true")
+                    {
+                        document.location.href = "<?=PATH?>";
+                    } else if (data == "false")
+                    {
+                        alert("Неверный пароль!");
+                        count_pass++;
+                        var password = prompt("На ваш телефон выслан пароль для входа. Ожидание ввода:");
+                        auth(password);
+                    }
+                }
+            });
+        }
+
         $("#btn").click(function(e){
             e.preventDefault();
 
@@ -9,11 +34,15 @@
                 type: "POST",
                 data: data,
                 success: function(data){
+                    alert(data);
                     if (data == "false"){
                         alert("Такой комбинации логина и пароля не неайдено, либо ваша учетная запись отключена.");
                         $("#pass").val("");
                     }else if (data == "true"){
                         document.location.href = "<?=PATH?>";
+                    }else if (data == "pass"){
+                        var password = prompt("На ваш телефон выслан пароль для входа. Ожидание ввода:");
+                        auth(password);
                     }
                 },
                 error: function(){

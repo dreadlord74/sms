@@ -75,14 +75,17 @@ switch ($view) {
         $auth = false;
         if ($_GET['do'] == 'auth'){
             $us = new user($_POST['login'], $_POST['pass']);
-            if ($auth) {
+           /* if ($auth) {
                 echo "true";
                 exit();
             }
             else{
                 echo "false";
                 exit;
-            }
+            }*/
+
+            echo $auth;
+            exit;
         }
     break;
 	case 'send_sms':
@@ -191,7 +194,7 @@ width: 173px; height: 20px;'>";
             case "get_ras":
 
                 $result = array();
-                print_arr($_GET);
+                
                 if (isset($_GET['sub'])){
                     foreach ($_GET as $key => $value)
                         if ($key == "on")
