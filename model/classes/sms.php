@@ -78,7 +78,7 @@ class sms extends device_sms implements _sms{
 
         if ($this->get_result())
         {
-            $msg = "Пароль для рассылки: $rand. Тема рассылки: ".$tema.". Сообщение: ".$msg;
+            $msg = "Немедленно сообщите администратору, если вы не совершали рассылку! Пароль для рассылки: $rand. Тема рассылки: ".$tema.". Сообщение: ".$msg;
             $result = $this->send_sms($msg, $this->phone)->get_result();
             if ($result['code'] == 0)
                 $this->set_result($this->db->get_last_id());
