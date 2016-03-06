@@ -317,10 +317,16 @@ width: 173px; height: 20px;'>";
         
     case 'view_ver':
         $title = TITLE." - Все подтвержденные";
-        $query = "SELECT * FROM users WHERE (phone_send='1' OR email_send='1') AND gorod={$us->gorod}";
+        $query = "SELECT * FROM users WHERE gorod={$us->gorod}";
         
         $res = $db->super_query($query)->get_res();
-        
+
+        if (isset($_GET[change])){
+            $us->change_contact($_POST[id], "send", $_POST[to]);
+            echo 1;
+            exit();
+        }
+
         break;
     
     case 'exit':

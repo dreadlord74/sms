@@ -29,6 +29,10 @@
         .top-menu a{
             text-decoration: none;
             color: #000;
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 30px;
         }
 
     .search{
@@ -290,5 +294,33 @@ ul{
             .row span{
                 display: table-cell;
                 width: 300px;
+                vertical-align: middle;
             }
 
+
+.view-tab {
+    border: 1px solid black;
+    position: relative;
+    margin-top: 20px !important;
+    /* margin: 0 auto; */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+    .view-tab .row:nth-child(odd) {
+        background: #9aafe5;
+    }
+
+        .view-tab .row > span:last-child {
+            width:auto;
+            display: inline-block;
+        }
+
+            .view-tab .row > span >div {
+                display: inline;
+            }
+
+            .view-tab .row > span > label {
+
+                margin-left: 20px;
+            }

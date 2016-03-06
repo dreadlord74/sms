@@ -561,4 +561,15 @@ class user extends vivod implements _user, _devices, _sms
 
         return $this;
 	}
+
+    public function change_contact(&$id, $change, $changeTo){
+        switch ($change){
+            case "send":
+                $query = "UPDATE users SET phone_send='".$changeTo."' WHERE id=".$id;
+
+                break;
+        }
+
+        $this->db->query($query);
+    }
 }
