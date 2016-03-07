@@ -33,10 +33,12 @@ class update {
      */
     function update_status(){
 
-        $query = "SELECT id_sms, device FROM `sended_sms` WHERE delivered='0' AND is_error='0' AND device IN (".implode(',', $this->us->get_devices()).")";
+        $query = "SELECT id_sms, device FROM `sended_sms`
+                      WHERE ((delivered='0' AND is_error='0') OR sended_sms.sended_to_phone='0')
+                          AND device IN (".implode(',', $this->us->get_devices()).")";
 echo $query;
         $res = $this->db->super_query($query)->get_res();
-        print_arr($res);
+        //print_arr($res);
         if (count($res) > 0){
             $ids = array();
 
@@ -47,32 +49,45 @@ echo $query;
             }
 
             $out = $this->us->get_out_sms($ids)->get_result();
-            print_arr($out);
+            //print_arr($out);
             unset($res, $ids);
-
-            $id_deliv = array();
-            $id_error = array();
 
             foreach($this->us->get_devices() as $device){
 
+                $ids[deliv] = array();
+                $ids[error] = array();
+                $ids[send_to_phone] = array();
+
+                $id_send_to_phone = &$ids[deliv];
+                $id_error = &$ids[deliv];
+                $id_deliv = &$ids[deliv];
+
                 foreach($out[$device]['data'] as $value){
 
-                    if ($value['is_delivered'] == 1){
+                    if ($value['is_delivered'] == 1)
                         $id_deliv[] = $value['id'];
-
-                    }else if (($value['is_error'] == 1) or ($value['is_error_send'] == 1)){
+                    else if (($value['is_error'] == 1) or ($value['is_error_send'] == 1))
                         $id_error[] = $value['id'];
-                    }
+                    else if ($value[is_send_to_phone] == 1)
+                        $id_send_to_phone[] = $value[id];
                 }
-                print_arr($id_deliv);
+                print_arr($id_send_to_phone);
                 if (count($id_deliv) > 0){
-                    $query = "UPDATE `sended_sms` SET delivered='1' WHERE id_sms IN(".implode(',', $id_deliv).") AND device='$device'";
+                    $query = "UPDATE `sended_sms` SET delivered='1'
+                                  WHERE id_sms IN(".implode(',', $id_deliv).") AND device='$device'";
 
                     $this->db->query($query);
                 }
 
                 if (count($id_error) > 0) {
-                    $query = "UPDATE `sended_sms` SET is_error='1' WHERE id_sms IN(".implode(',', $id_error).") AND device='$device'";
+                    $query = "UPDATE `sended_sms` SET is_error='1'
+                                  WHERE id_sms IN(".implode(',', $id_error).") AND device='$device'";
+                    $this->db->query($query);
+                }
+
+                if (count($id_send_to_phone) > 0){
+                    $query = "UPDATE `sended_sms` SET sended_to_phone='1'
+                                  WHERE id_sms IN(".implode(',', $id_send_to_phone).") AND device='$device'";
                     $this->db->query($query);
                 }
             }
@@ -82,6 +97,7 @@ echo $query;
 
     /**
      * Метод для установки подтверждения номеров получателей рассылки
+     * Этот метод пока не актуален
      * @return $this
      */
     function update_ver(){
