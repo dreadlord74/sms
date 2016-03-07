@@ -39,6 +39,8 @@ foreach ($result as $item){
 }
 unset($result, $query, $db);
 
+
+ /*
 $handle = fopen("cronLog.txt", "a");
     $str = "Last timestamp: ".date("d.m.Y")." ".date("H:i:s")."\n";
     fwrite($handle, $str);
