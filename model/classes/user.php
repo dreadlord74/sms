@@ -284,7 +284,9 @@ class user extends vivod implements _user, _devices, _sms
 
                     $password = gen_pass();
 
-                    $this->send_sms(str_replace("[пароль]", $password, $settings[auth_masg]), $res[phone]);
+                    $msg =str_replace("[пароль]", $password, $settings[auth_masg]);
+
+                    $this->send_sms($msg, $res[phone]);
 
 
                     $this->db->query("UPDATE admin SET auth_pass=".$password." WHERE id=".$res[id]);
@@ -298,6 +300,10 @@ class user extends vivod implements _user, _devices, _sms
                     $this->db->write_log(1, "Вход! IP: ".$_SERVER[REMOTE_ADDR]."; ".$_SERVER[HTTP_USER_AGENT]);
                     $this->db->query("UPDATE admin SET auth_pass=0 WHERE id=".$res[id]);
                     $auth = "true";
+                }
+                else if ($res[auth_pass] != $_POST[password])
+                {
+                    $auth = "false";
                 }
                 else
                 {
