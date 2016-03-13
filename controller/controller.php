@@ -214,10 +214,16 @@ width: 173px; height: 20px;'>";
 
                 $query = "SELECT tema, id, msg FROM sended_mass WHERE user_id=".$_SESSION[id];
 
+                //$query = "SELECT tema, id, msg FROM sended_mass WHERE";
+
                 $res = $db->super_query($query)->get_res();
 
                 break;
         }
+
+        $wait = $db->super_query("SELECT COUNT(sended_to_phone) FROM sended_sms
+                                      LEFT JOIN sended_mass ON sended_mass.id = id_rassilki
+                                          WHERE sended_to_phone='0' AND gorod != ".$us->gorod, false)->get_res();
 
         break;
 	
@@ -348,6 +354,9 @@ width: 173px; height: 20px;'>";
 
         break;
 }
+
+$opisanie = $db->super_query("SELECT text FROM directories WHERE title='".$view."'", false)->get_res();
+
 unset($db, $query, $do, $get);
 
 require_once "view/index.php";

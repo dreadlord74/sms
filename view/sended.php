@@ -13,6 +13,13 @@
 <?php endif?>
 
 <?php if(isset($result)):?>
+    <?php if ($wait['COUNT(sended_to_phone)'] > 0):?>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            alert("Из-за большой очереди отправляемых смс ваша расслка нанётся через <?=(int)($wait['COUNT(sended_to_phone)']/4)?> минут");
+        });
+    </script>
+    <?php endif?>
     <?php
         $info = array();
 
