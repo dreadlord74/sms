@@ -58,8 +58,8 @@ echo $query;
                 $ids[error] = array();
                 $ids[send_to_phone] = array();
 
-                $id_send_to_phone = &$ids[deliv];
-                $id_error = &$ids[deliv];
+                $id_send_to_phone = &$ids[send_to_phone];
+                $id_error = &$ids[error];
                 $id_deliv = &$ids[deliv];
 
                 foreach($out[$device]['data'] as $value){
