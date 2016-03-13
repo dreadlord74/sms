@@ -125,7 +125,7 @@ class sms extends device_sms implements _sms{
     	        "msg" => $msg,
     	        "device" => $this->device_class->get_default(),
     	        "token" => $this->get_token(),
-                "priority" => 10
+                "priority" => 100000
     	 	);
         $data = http_build_query($data);
 
@@ -197,7 +197,7 @@ class sms extends device_sms implements _sms{
                                 'device' => $device,
                                 'phone' => $phones[$last],
                                 'msg' => $msg,
-                                'priority' => 1
+                                'priority' => 0
                             );
                             $last++;
                         }
