@@ -324,3 +324,14 @@ ul{
 
                 margin-left: 20px;
             }
+
+.opisanie {
+    width:100%;
+    position: relative;
+    float: left;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-top: 15px;
+    border: 1px solid #000;
+    margin-bottom: 15px;
+}

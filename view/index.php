@@ -22,6 +22,16 @@
     if (isset($_SESSION['id'])){
         include VIEW."/inc/menu.php";
     }
+?>
+    <div style="clear: both"></div>
+    <div class="wrapper">
+        <div class="opisanie">
+            <?=$opisanie['text']?>
+        </div>
+    </div>
+<div style="clear: both"></div>
+<?php
+
 	include $view.".php";
 ?>
 
